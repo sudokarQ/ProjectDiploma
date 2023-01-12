@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.Backend.Web", "DiplomaProject.Backend.Web\DiplomaProject.Backend.Web.csproj", "{2F27545F-6C70-412F-A31C-FBD3C45AF382}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.Backend.BuisnessLayer", "DiplomaProject.Backend.BuisnessLayer\DiplomaProject.Backend.BuisnessLayer.csproj", "{E1802434-28F4-4F2D-9BBA-D6E653A5C456}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2F27545F-6C70-412F-A31C-FBD3C45AF382}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F27545F-6C70-412F-A31C-FBD3C45AF382}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F27545F-6C70-412F-A31C-FBD3C45AF382}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1802434-28F4-4F2D-9BBA-D6E653A5C456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1802434-28F4-4F2D-9BBA-D6E653A5C456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1802434-28F4-4F2D-9BBA-D6E653A5C456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1802434-28F4-4F2D-9BBA-D6E653A5C456}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
