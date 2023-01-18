@@ -14,6 +14,8 @@ namespace DiplomaProject.Backend.Common.DataBaseConfigurations
 
             builder.HasOne(t => t.Shop);
 
+            builder.HasOne(t => t.Promotion);
+
             builder.HasMany(t => t.Orders);
         }
     }

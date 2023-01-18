@@ -11,8 +11,6 @@ namespace DiplomaProject.Backend.Common.DataBaseConfigurations
             builder.ToTable("promotions");
 
             builder.HasKey(t => t.Id);
-
-            builder.HasOne(t => t.Service);
         }
     }
 }
