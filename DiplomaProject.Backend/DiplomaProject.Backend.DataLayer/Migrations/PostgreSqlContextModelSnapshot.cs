@@ -31,8 +31,11 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Property<DateOnly>("BirthdayDate")
                         .HasColumnType("date");
 
-                    b.Property<double>("BonusCount")
-                        .HasColumnType("double precision");
+                    b.Property<int>("BonusCount")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -51,9 +54,26 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("clients", (string)null);
+                });
+
+            modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Company", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("company", (string)null);
                 });
 
             modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Order", b =>
@@ -70,8 +90,14 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
+                    b.Property<bool>("OnDelivery")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uuid");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<TimeOnly>("Time")
                         .HasColumnType("time without time zone");
@@ -91,14 +117,31 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CompanyPercent")
+                        .HasColumnType("numeric");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("DiscountPercent")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsCorporate")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("promotions", (string)null);
                 });
@@ -190,11 +233,19 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
 
             modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Client", b =>
                 {
+                    b.HasOne("DiplomaProject.Backend.Common.Models.Entity.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DiplomaProject.Backend.Common.Models.Entity.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Company");
 
                     b.Navigation("User");
                 });
@@ -216,6 +267,17 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Promotion", b =>
+                {
+                    b.HasOne("DiplomaProject.Backend.Common.Models.Entity.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Service", b =>

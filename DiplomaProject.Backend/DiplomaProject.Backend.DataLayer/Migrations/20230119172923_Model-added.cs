@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiplomaProject.Backend.DataLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class modeladded : Migration
+    public partial class Modeladded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     Surname = table.Column<string>(type: "text", nullable: false),
                     BirthdayDate = table.Column<DateOnly>(type: "date", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    BonusCount = table.Column<double>(type: "double precision", nullable: false),
+                    BonusCount = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -36,6 +36,19 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "promotions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    DiscountPercent = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_promotions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "services",
                 columns: table => new
                 {
@@ -43,11 +56,17 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     TypeService = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    PromotionId = table.Column<Guid>(type: "uuid", nullable: true),
                     ShopId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_services_promotions_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "promotions",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_services_shop_ShopId",
                         column: x => x.ShopId,
@@ -62,10 +81,10 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ClientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
+                    Time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    ClientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,26 +97,6 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_orders_services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "promotions",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    DiscountPercent = table.Column<double>(type: "double precision", nullable: false),
-                    ServiceId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_promotions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_promotions_services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "services",
                         principalColumn: "Id",
@@ -120,9 +119,9 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_promotions_ServiceId",
-                table: "promotions",
-                column: "ServiceId");
+                name: "IX_services_PromotionId",
+                table: "services",
+                column: "PromotionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_services_ShopId",
@@ -137,13 +136,13 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                 name: "orders");
 
             migrationBuilder.DropTable(
-                name: "promotions");
-
-            migrationBuilder.DropTable(
                 name: "clients");
 
             migrationBuilder.DropTable(
                 name: "services");
+
+            migrationBuilder.DropTable(
+                name: "promotions");
         }
     }
 }

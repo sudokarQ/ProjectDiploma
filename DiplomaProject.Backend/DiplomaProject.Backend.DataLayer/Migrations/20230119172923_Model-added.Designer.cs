@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiplomaProject.Backend.DataLayer.Migrations
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20230118015150_model_added")]
-    partial class modeladded
+    [Migration("20230119172923_Model-added")]
+    partial class Modeladded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,8 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Property<DateOnly>("BirthdayDate")
                         .HasColumnType("date");
 
-                    b.Property<double>("BonusCount")
-                        .HasColumnType("double precision");
+                    b.Property<int>("BonusCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -98,15 +98,10 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("DiscountPercent")
-                        .HasColumnType("double precision");
-
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
 
                     b.ToTable("promotions", (string)null);
                 });
@@ -124,6 +119,9 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("PromotionId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ShopId")
                         .HasColumnType("uuid");
 
@@ -132,6 +130,8 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PromotionId");
 
                     b.HasIndex("ShopId");
 
@@ -221,24 +221,19 @@ namespace DiplomaProject.Backend.DataLayer.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Promotion", b =>
-                {
-                    b.HasOne("DiplomaProject.Backend.Common.Models.Entity.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
-                });
-
             modelBuilder.Entity("DiplomaProject.Backend.Common.Models.Entity.Service", b =>
                 {
+                    b.HasOne("DiplomaProject.Backend.Common.Models.Entity.Promotion", "Promotion")
+                        .WithMany()
+                        .HasForeignKey("PromotionId");
+
                     b.HasOne("DiplomaProject.Backend.Common.Models.Entity.Shop", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Promotion");
 
                     b.Navigation("Shop");
                 });

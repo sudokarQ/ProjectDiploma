@@ -4,15 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DiplomaProject.Backend.Common.DataBaseConfigurations
 {
-    public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
+    public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
-        public void Configure(EntityTypeBuilder<Promotion> builder)
+        public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.ToTable("promotions");
+            builder.ToTable("company");
 
             builder.HasKey(t => t.Id);
-
-            builder.HasOne(t => t.Company);
         }
     }
 }

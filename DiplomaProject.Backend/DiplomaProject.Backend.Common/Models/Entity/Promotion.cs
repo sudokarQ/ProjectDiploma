@@ -4,6 +4,13 @@
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public double DiscountPercent { get; set; }
+        public DateTime BeginDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public decimal DiscountPercent { get; set; }
+
+        public bool IsCorporate { get; set; }
+        public Company Company { get; set; }
+        public decimal CompanyPercent { get; set;}
+        
     }
 }

@@ -25,6 +25,7 @@ namespace DiplomaProject.Backend.DataLayer
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
         }
 
         public DbSet<User> Users { get; set; }
@@ -34,5 +35,6 @@ namespace DiplomaProject.Backend.DataLayer
         public DbSet<Client> Client { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Company> Companies { get; set; }
     }
 }
