@@ -12,7 +12,7 @@ namespace DiplomaProject.Backend.Common.DataBaseConfigurations
 
             builder.HasKey(t => t.Id);
 
-            builder.HasOne(t => t.Company);
+            builder.HasOne(t => t.Service);
         }
     }
 }

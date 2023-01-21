@@ -14,8 +14,6 @@ namespace DiplomaProject.Backend.Common.DataBaseConfigurations
 
             builder.HasOne(t => t.User);
 
-            builder.HasOne(t => t.Company);
-
             builder.HasMany(t => t.Orders);
         }
     }
