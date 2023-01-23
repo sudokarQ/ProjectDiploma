@@ -1,27 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DiplomaProject.Backend.Common.GenericRepository
+namespace DiplomaProject.Backend.DataLayer.GenericRepository
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        DbContext _context;
-        DbSet<TEntity> _dbSet;
+        private readonly PostgreSqlContext _context;
+        private readonly DbSet<TEntity> _dbSet;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(PostgreSqlContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> Get()
-        {
-            return _dbSet.ToList();
-        }
+        public Task<List<TEntity>> GetAsync() 
+            => _dbSet.AsNoTracking().ToListAsync();
 
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
-        {
-            return _dbSet.Where(predicate).ToList();
-        }
+        //public async Task<List<TEntity>> Get(Func<TEntity, bool> predicate)
+        //{
+        //    return _dbSet.Where(predicate).AsNoTracking().ToListAsync();
+        //}
+
         public TEntity FindById(int id)
         {
             return _dbSet.Find(id);
@@ -34,13 +33,18 @@ namespace DiplomaProject.Backend.Common.GenericRepository
         }
         public void Update(TEntity item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _dbSet.Update(item);
             _context.SaveChanges();
         }
         public void Remove(TEntity item)
         {
             _dbSet.Remove(item);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DiplomaProject.Backend.Common\DiplomaProject.Backend.Common.csproj" />
+    <ProjectReference Include="..\DiplomaProject.Backend.DataLayer\DiplomaProject.Backend.DataLayer.csproj" />
+  </ItemGroup>
+
 </Project>
