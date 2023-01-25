@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.DataLayer.GenericRepository
 {
@@ -16,35 +17,44 @@ namespace DiplomaProject.Backend.DataLayer.GenericRepository
         public Task<List<TEntity>> GetAsync() 
             => _dbSet.AsNoTracking().ToListAsync();
 
-        //public async Task<List<TEntity>> Get(Func<TEntity, bool> predicate)
+        //public List<TEntity> GetAsync(Func<TEntity, bool> predicate) // Исправить
         //{
-        //    return _dbSet.Where(predicate).AsNoTracking().ToListAsync();
+        //    return _dbSet.Where(predicate).ToList();
         //}
 
-        public TEntity FindById(int id)
+        public async Task<List<TEntity>> GetAll()
         {
-            return _dbSet.Find(id);
+            return await _dbSet.ToListAsync();
         }
 
-        public void Create(TEntity item)
+        public async Task<TEntity> FindById(Guid id) => await _dbSet.FindAsync(id);
+        
+        public async Task<TEntity> FindByName(string name) => await _dbSet.FindAsync(name);
+
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            _dbSet.Add(item);
-            _context.SaveChanges();
+            return _dbSet.Where(predicate);
+        }
+
+        public void CreateAsync(TEntity item)
+        {
+            _dbSet.AddAsync(item);
+            _context.SaveChangesAsync();
         }
         public void Update(TEntity item)
         {
             _dbSet.Update(item);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
         public void Remove(TEntity item)
         {
             _dbSet.Remove(item);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
+        public TEntity FirstOrDefault(Func<TEntity, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _dbSet.FirstOrDefault(predicate);
         }
     }
 }
