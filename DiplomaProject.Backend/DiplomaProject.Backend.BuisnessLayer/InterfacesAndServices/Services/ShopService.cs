@@ -76,7 +76,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(shop.Name))
                 return false;
 
-            if (_genericRepository.Find(x => x.Name == shop.Name).Any());
+            if (_genericRepository.Find(x => x.Name == shop.Name).Any())
                 return false;
 
             return true;

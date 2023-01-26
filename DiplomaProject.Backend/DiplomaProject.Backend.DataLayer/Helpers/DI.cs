@@ -24,6 +24,7 @@ namespace DiplomaProject.Backend.DataLayer.Helpers
         private static void AddClass(IServiceCollection service)
         {
             service.AddScoped<IGenericRepository<Shop>, GenericRepository<Shop>>();
+            service.AddScoped<IGenericRepository<Client>, GenericRepository<Client>>();
             // для каждой модели
         }
     }

@@ -16,6 +16,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.Helpers
         private static void AddClass(IServiceCollection service)
         {
             service.AddScoped<IShopService, ShopService>();
+            service.AddScoped<IClientService, ClientService>();
             // для каждой модели
         }
     }
