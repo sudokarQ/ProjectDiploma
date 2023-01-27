@@ -1,6 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Shop;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services

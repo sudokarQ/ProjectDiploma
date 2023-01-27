@@ -38,7 +38,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             };
         }
 
-        public async Task<ClientPostDto> FindByName(string name)
+        public async Task<ClientPostDto> FindByNameAsync(string name)
         {
             var client = await _clientRepository.FindByNameAsync(name);
             return client is null ? null : new ClientPostDto
