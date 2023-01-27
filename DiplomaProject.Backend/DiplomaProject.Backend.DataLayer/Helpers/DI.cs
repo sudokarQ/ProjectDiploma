@@ -1,5 +1,6 @@
 ﻿using DiplomaProject.Backend.Common.Models.Entity;
-using DiplomaProject.Backend.DataLayer.GenericRepository;
+using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using DiplomaProject.Backend.DataLayer.Repositories.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +24,12 @@ namespace DiplomaProject.Backend.DataLayer.Helpers
 
         private static void AddClass(IServiceCollection service)
         {
-            service.AddScoped<IGenericRepository<Shop>, GenericRepository<Shop>>();
+            service.AddScoped<IGenericRepository<Shop>, GenericRepository<Shop>>(); //надо ли до сих пор?
             service.AddScoped<IGenericRepository<Client>, GenericRepository<Client>>();
+            service.AddScoped<IClientRepository, ClientRepository>();
+            service.AddScoped<IShopRepository, ShopRepository>();
+            service.AddScoped<IOrderRepository, OrderRepository>();
+            
             // для каждой модели
         }
     }

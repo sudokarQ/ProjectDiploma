@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace DiplomaProject.Backend.DataLayer.GenericRepository
+namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
@@ -14,7 +15,7 @@ namespace DiplomaProject.Backend.DataLayer.GenericRepository
             _dbSet = context.Set<TEntity>();
         }
 
-        public Task<List<TEntity>> GetAsync() 
+        public Task<List<TEntity>> GetAsync()
             => _dbSet.AsNoTracking().ToListAsync();
 
         //public List<TEntity> GetAsync(Func<TEntity, bool> predicate) // Исправить
@@ -27,29 +28,27 @@ namespace DiplomaProject.Backend.DataLayer.GenericRepository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity> FindById(Guid id) => await _dbSet.FindAsync(id);
-        
-        public async Task<TEntity> FindByName(string name) => await _dbSet.FindAsync(name);
-
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbSet.Where(predicate);
         }
 
-        public void CreateAsync(TEntity item)
+        public async Task CreateAsync(TEntity item)
         {
-            _dbSet.AddAsync(item);
-            _context.SaveChangesAsync();
+            await _dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
-        public void Update(TEntity item)
+
+        public async Task UpdateAsync(TEntity item)
         {
             _dbSet.Update(item);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
-        public void Remove(TEntity item)
+
+        public async Task RemoveAsync(TEntity item)
         {
             _dbSet.Remove(item);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public TEntity FirstOrDefault(Func<TEntity, bool> predicate)

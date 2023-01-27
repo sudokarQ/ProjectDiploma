@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiplomaProject.Backend.BuisnessLayer\DiplomaProject.Backend.BuisnessLayer.csproj" />
-    <ProjectReference Include="..\DiplomaProject.Backend.DataLayer\DiplomaProject.Backend.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

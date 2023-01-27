@@ -10,6 +10,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.Helpers
         public static void Add(IConfiguration conf, IServiceCollection service)
         {
             AddClass(service);
+            DataLayer.Helpers.DI.Add(conf, service);
+
         }
 
 
@@ -17,6 +19,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.Helpers
         {
             service.AddScoped<IShopService, ShopService>();
             service.AddScoped<IClientService, ClientService>();
+            service.AddScoped<IOrderService, OrderService>();
             // для каждой модели
         }
     }

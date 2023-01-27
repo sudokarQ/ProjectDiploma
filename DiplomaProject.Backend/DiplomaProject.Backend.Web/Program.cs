@@ -10,7 +10,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-DiplomaProject.Backend.DataLayer.Helpers.DI.Add(builder.Configuration, builder.Services);
 DiplomaProject.Backend.BuisnessLayer.Helpers.DI.Add(builder.Configuration, builder.Services);
 
 var app = builder.Build();

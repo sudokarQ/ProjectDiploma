@@ -1,17 +1,15 @@
 ﻿using System.Linq.Expressions;
 
-namespace DiplomaProject.Backend.DataLayer.GenericRepository
+namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        void CreateAsync(TEntity item);
-        Task<TEntity> FindById(Guid id);
-        Task<TEntity> FindByName(string name);
+        Task CreateAsync(TEntity item);
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         //Task<List<TEntity>> GetAsync(Func<TEntity, bool> predicate);
         //List<TEntity> GetAsync(Func<TEntity, bool> predicate);
-        void Remove(TEntity item);
-        void Update(TEntity item);
+        Task RemoveAsync(TEntity item);
+        Task UpdateAsync(TEntity item);
         TEntity FirstOrDefault(Func<TEntity, bool> predicate);
         Task<List<TEntity>> GetAsync();
     }

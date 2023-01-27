@@ -1,23 +1,22 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
-using DiplomaProject.Backend.Common.Models.Entity;
-using DiplomaProject.Backend.DataLayer.GenericRepository;
+using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
     public class ClientService : IClientService
     {
-        private readonly IGenericRepository<Client> _genericRepository;
+        private readonly IClientRepository _clientRepository;
 
-        public ClientService(IGenericRepository<Client> genericRepository)
+        public ClientService(IClientRepository clientRepository)
         {
-            _genericRepository = genericRepository;
+            _clientRepository = clientRepository;
         }
 
-        public void CreateAsync(ClientPostDto client)
+        public async Task CreateAsync(ClientPostDto client)
         {
             if (Validation(client))
-                _genericRepository.CreateAsync(new()
+                await _clientRepository.CreateAsync(new()
                 {
                     Id = new Guid(),
                     Name = client.Name,
@@ -28,34 +27,26 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<ClientPostDto> FindById(Guid id)
+        public async Task<ClientPostDto> FindByIdAsync(Guid id)
         {
-            var client = await _genericRepository.FindById(id);
-            if (client != null)
+            var client = await _clientRepository.FindByIdAsync(id);
+            return client is null ? null : new ClientPostDto
             {
-                return new ClientPostDto
-                {
-                    Name = client.Name,
-                    Surname = client.Surname,
-                    PhoneNumber = client.PhoneNumber,
-                };
-            }
-            return null;
+                Name = client.Name,
+                Surname = client.Surname,
+                PhoneNumber = client.PhoneNumber,
+            };
         }
 
         public async Task<ClientPostDto> FindByName(string name)
         {
-            var client = await _genericRepository.FindByName(name);
-            if (client != null)
+            var client = await _clientRepository.FindByNameAsync(name);
+            return client is null ? null : new ClientPostDto
             {
-                return new ClientPostDto
-                {
-                    Name = client.Name,
-                    Surname = client.Surname,
-                    PhoneNumber = client.PhoneNumber,
-                };
-            }
-            return null;
+                Name = client.Name,
+                Surname = client.Surname,
+                PhoneNumber = client.PhoneNumber,
+            }!;
         }
 
         public Task<List<ClientPostDto>> GetAsync(Func<ClientPostDto, bool> predicate)
@@ -66,7 +57,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<ClientPostDto>> GetAllAsync()
         {
-            var clients = await _genericRepository.GetAsync();
+            var clients = await _clientRepository.GetAsync();
             return clients.Select(x => new ClientPostDto
             {
                 Name = x.Name,
@@ -75,16 +66,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public void Remove(ClientPostDto clientDto)
+        public async Task RemoveAsync(ClientPostDto clientDto)
         {
-            var client = _genericRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber && x.Surname == clientDto.Surname);
-            _genericRepository.Remove(client);
+            var client = _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber && x.Surname == clientDto.Surname);
+            await _clientRepository.RemoveAsync(client);
         }
 
-        public void Update(ClientPostDto clientDto)
+        public async Task UpdateAsync(ClientPostDto clientDto)
         {
-            var client = _genericRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber);
-            _genericRepository.Update(client);
+            var client = _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber);
+            await _clientRepository.UpdateAsync(client);
         }
 
         private bool Validation(ClientPostDto client)
@@ -92,7 +83,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(client.Name) || string.IsNullOrEmpty(client.Surname) || string.IsNullOrEmpty(client.PhoneNumber))
                 return false;
 
-            if (_genericRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
+            if (_clientRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
                 return false;
 
             return true;

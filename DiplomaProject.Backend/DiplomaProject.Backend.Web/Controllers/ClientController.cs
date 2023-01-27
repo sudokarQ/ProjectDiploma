@@ -40,17 +40,17 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteClient")]
         [AllowAnonymous]
-        public IActionResult Remove(ClientPostDto clientPostDto)
+        public async Task<IActionResult> Remove(ClientPostDto clientPostDto)
         {
-            _clientService.Remove(clientPostDto);
+            await _clientService.RemoveAsync(clientPostDto);
             return Ok();
         }
 
         [HttpPut("UpdateClient")]
         [AllowAnonymous]
-        public IActionResult Update(ClientPostDto clientPostDto)
+        public async Task<IActionResult> Update(ClientPostDto clientPostDto)
         {
-            _clientService.Update(clientPostDto);
+            await _clientService.UpdateAsync(clientPostDto);
             return Ok();
         }
 
@@ -58,10 +58,7 @@ namespace DiplomaProject.Backend.Web.Controllers
         [AllowAnonymous]
         public async Task<ClientPostDto> FindByIdAsync(Guid id)
         {
-            var clientDto = await _clientService.FindById(id);
-            if (clientDto == null)
-                return null;
-
+            var clientDto = await _clientService.FindByIdAsync(id);
             return clientDto;
         }
     }

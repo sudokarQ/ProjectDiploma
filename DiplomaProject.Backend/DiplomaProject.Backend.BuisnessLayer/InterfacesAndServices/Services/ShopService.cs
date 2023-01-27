@@ -1,23 +1,23 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Shop;
 using DiplomaProject.Backend.Common.Models.Entity;
-using DiplomaProject.Backend.DataLayer.GenericRepository;
+using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
     public class ShopService : IShopService
     {
-        private readonly IGenericRepository<Shop> _genericRepository;
+        private readonly IShopRepository _shopRepository;
         
-        public ShopService(IGenericRepository<Shop> genericRepository)
+        public ShopService(IShopRepository shopRepository)
         {
-            _genericRepository = genericRepository;
+            _shopRepository = shopRepository;
         }
 
         public void CreateAsync(ShopPostDto shop) //потом на таски заменить
         {
             if (Validation(shop))
-                _genericRepository.CreateAsync(new()
+                _shopRepository.CreateAsync(new()
                 {
                     Id = new Guid(),
                     Name = shop.Name,
@@ -29,7 +29,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<ShopPostDto> FindById(Guid id)
         {
-            var shop = await _genericRepository.FindById(id);
+            var shop = await _shopRepository.FindByIdAsync(id);
             if (shop != null)
             {
                 return new ShopPostDto { Name = shop.Name, Description = shop.Description };
@@ -39,7 +39,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<ShopPostDto> FindByName(string name)
         {
-            var shop = await _genericRepository.FindByName(name);
+            var shop = await _shopRepository.FindByNameAsync(name);
             if (shop != null)
             {
                 return new ShopPostDto { Name = shop.Name, Description = shop.Description };
@@ -55,20 +55,20 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<ShopPostDto>> GetAllAsync()
         {
-            var shops = await _genericRepository.GetAsync();
+            var shops = await _shopRepository.GetAsync();
             return shops.Select(x => new ShopPostDto { Name = x.Name, Description = x.Description }).ToList();
         }
 
         public void Remove(ShopPostDto shopDto)
         {
-            var shop = _genericRepository.FirstOrDefault(x => x.Name == shopDto.Name);
-            _genericRepository.Remove(shop);
+            var shop = _shopRepository.FirstOrDefault(x => x.Name == shopDto.Name);
+            _shopRepository.RemoveAsync(shop);
         }
 
         public void Update(ShopPostDto shopDto)
         {
-            var shop = _genericRepository.FirstOrDefault(x => x.Name == shopDto.Name);
-            _genericRepository.Update(shop);
+            var shop = _shopRepository.FirstOrDefault(x => x.Name == shopDto.Name);
+            _shopRepository.UpdateAsync(shop);
         }
 
         private bool Validation(ShopPostDto shop)
@@ -76,7 +76,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(shop.Name))
                 return false;
 
-            if (_genericRepository.Find(x => x.Name == shop.Name).Any())
+            if (_shopRepository.Find(x => x.Name == shop.Name).Any())
                 return false;
 
             return true;
