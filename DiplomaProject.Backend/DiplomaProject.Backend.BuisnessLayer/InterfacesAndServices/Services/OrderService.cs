@@ -26,7 +26,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<OrderPostDto> FindByIdAsync(Guid id)
+        public async Task<OrderPostDto> FindByIdAsync(int id)
         {
             var order = await _orderRepository.FindByIdAsync(id);
             return order is null ? null : new OrderPostDto

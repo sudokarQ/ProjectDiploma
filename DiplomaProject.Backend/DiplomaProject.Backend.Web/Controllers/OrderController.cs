@@ -57,7 +57,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("FindOrder")]
         [AllowAnonymous]
-        public async Task<OrderPostDto> FindByIdAsync(Guid id)
+        public async Task<OrderPostDto> FindByIdAsync(int id)
         {
             var orderDto = await _orderService.FindByIdAsync(id);
             return orderDto;
