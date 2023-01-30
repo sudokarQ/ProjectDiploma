@@ -53,7 +53,7 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
 
         public TEntity FirstOrDefault(Func<TEntity, bool> predicate)
         {
-            return _dbSet.FirstOrDefault(predicate);
+            return _dbSet.FirstOrDefault(predicate); //can't convert threading cancelletion token
         }
     }
 }

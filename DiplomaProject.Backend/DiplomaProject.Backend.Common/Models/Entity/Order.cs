@@ -1,10 +1,12 @@
 ﻿using DiplomaProject.Backend.Common.DataBaseConfigurations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaProject.Backend.Common.Models.Entity
 {
     public class Order
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
         public DateOnly Date { get; set; }
         public TimeOnly Time { get; set; }
 

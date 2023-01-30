@@ -10,6 +10,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task RemoveAsync(OrderPostDto item);
         Task UpdateAsync(OrderPostDto item);
         Task<List<OrderPostDto>> GetAllAsync();
-        Task<OrderPostDto> FindByIdAsync(int id);
+        Task<OrderPostDto> FindByIdAsync(Guid id);
     }
 }

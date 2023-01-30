@@ -26,7 +26,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<OrderPostDto> FindByIdAsync(int id)
+        public async Task<OrderPostDto> FindByIdAsync(Guid id)
         {
             var order = await _orderRepository.FindByIdAsync(id);
             return order is null ? null : new OrderPostDto
@@ -68,8 +68,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         private bool Validation(OrderPostDto order)
         {
-            if (_orderRepository.Find(x => x.Date == order.Date && x.Time == order.Time).Any())
-                return false;
+            //if (_orderRepository.Find(x => x.Date == order.Date && x.Time == order.Time).Any()) //поменять
+            //    return false;
 
             return true;
         }
