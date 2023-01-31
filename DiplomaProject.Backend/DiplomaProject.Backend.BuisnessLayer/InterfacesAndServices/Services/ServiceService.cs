@@ -57,7 +57,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<ServicePostDto>> GetAllAsync()
         {
-            var services = await _serviceRepository.GetAsync();
+            var services = await _serviceRepository.GetAllAsync();
             return services.Select(x => new ServicePostDto
             {
                 Name = x.Name,
@@ -83,7 +83,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price == 0)
                 return false;
 
-            if (_serviceRepository.Find(x => x.Name == service.Name).Any())
+            if (_serviceRepository.FirstOrDefault(x => x.Name == service.Name) is not null)
                 return false;
 
             return true;

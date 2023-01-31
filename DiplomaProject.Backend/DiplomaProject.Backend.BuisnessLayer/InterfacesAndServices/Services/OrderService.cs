@@ -45,7 +45,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<OrderPostDto>> GetAllAsync()
         {
-            var orders = await _orderRepository.GetAsync();
+            var orders = await _orderRepository.GetAllAsync();
             return orders.Select(x => new OrderPostDto
             {
                 Date = x.Date,
@@ -68,8 +68,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         private bool Validation(OrderPostDto order)
         {
-            //if (_orderRepository.Find(x => x.Date == order.Date && x.Time == order.Time).Any()) //поменять
-            //    return false;
+            if (_orderRepository.FirstOrDefault(x => x.Date == order.Date && x.Time == order.Time) is not null) //поменять
+                return false;
 
             return true;
         }

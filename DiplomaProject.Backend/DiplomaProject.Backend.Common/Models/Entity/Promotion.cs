@@ -12,6 +12,6 @@
         public bool IsCorporate { get; set; }
         public decimal? CompanyPercent { get; set; }
 
-        public Service Service { get; set; }
+        public Service? Service { get; set; }
     }
 }

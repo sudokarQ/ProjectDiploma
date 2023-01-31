@@ -68,7 +68,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<PromotionPostDto>> GetAllAsync()
         {
-            var promotions = await _promotionRepository.GetAsync();
+            var promotions = await _promotionRepository.GetAllAsync();
             return promotions.Select(x => new PromotionPostDto
             {
                 Name = x.Name,
@@ -78,24 +78,21 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public void Remove(PromotionPostDto promotionDto)
+        public async void Remove(PromotionPostDto promotionDto)
         {
             var promotion = _promotionRepository.FirstOrDefault(x => x.Name == promotionDto.Name);
-            _promotionRepository.RemoveAsync(promotion);
+            await _promotionRepository.RemoveAsync(promotion);
         }
 
-        public void Update(PromotionPostDto promotionDto)
+        public async void Update(PromotionPostDto promotionDto)
         {
             var promotion = _promotionRepository.FirstOrDefault(x => x.Name == promotionDto.Name);
-            _promotionRepository.UpdateAsync(promotion);
+            await _promotionRepository.UpdateAsync(promotion);
         }
 
         private bool Validation(PromotionPostDto promotion)
         {
             if (string.IsNullOrEmpty(promotion.Name))
-                return false;
-
-            if (_promotionRepository.Find(x => x.Name == promotion.Name).Any())
                 return false;
 
             return true;

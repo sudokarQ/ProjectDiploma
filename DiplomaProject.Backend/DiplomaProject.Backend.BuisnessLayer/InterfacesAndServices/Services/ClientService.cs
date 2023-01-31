@@ -1,6 +1,8 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -49,15 +51,20 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }!;
         }
 
-        public Task<List<ClientPostDto>> GetAsync(Func<ClientPostDto, bool> predicate)
+        public async Task<List<ClientPostDto>> GetAsync(Expression<Func<Client, bool>> predicate)
         {
-
-            return null;
+            var clients = await _clientRepository.GetAsync(predicate);
+            return clients.Select(x => new ClientPostDto
+            {
+                Name = x.Name,
+                Surname = x.Surname,
+                PhoneNumber = x.PhoneNumber,
+            }).ToList();
         }
 
         public async Task<List<ClientPostDto>> GetAllAsync()
         {
-            var clients = await _clientRepository.GetAsync();
+            var clients = await _clientRepository.GetAllAsync();
             return clients.Select(x => new ClientPostDto
             {
                 Name = x.Name,
@@ -74,7 +81,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task UpdateAsync(ClientPostDto clientDto)
         {
-            var client = _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber);
+            var client =  _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber);
             await _clientRepository.UpdateAsync(client);
         }
 
@@ -83,7 +90,10 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(client.Name) || string.IsNullOrEmpty(client.Surname) || string.IsNullOrEmpty(client.PhoneNumber))
                 return false;
 
-            if (_clientRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
+            //if (_clientRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
+            //    return false;
+
+            if (_clientRepository.FirstOrDefault(x => x.PhoneNumber == client.PhoneNumber) is not null)
                 return false;
 
             return true;

@@ -6,11 +6,10 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
     {
         Task CreateAsync(TEntity item);
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        //Task<List<TEntity>> GetAsync(Func<TEntity, bool> predicate);
-        //List<TEntity> GetAsync(Func<TEntity, bool> predicate);
+        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
         Task RemoveAsync(TEntity item);
         Task UpdateAsync(TEntity item);
         TEntity FirstOrDefault(Func<TEntity, bool> predicate);
-        Task<List<TEntity>> GetAsync();
+        Task<List<TEntity>> GetAllAsync();
     }
 }

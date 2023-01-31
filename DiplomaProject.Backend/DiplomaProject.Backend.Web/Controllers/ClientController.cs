@@ -1,7 +1,9 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.Web.Controllers
 {
@@ -16,10 +18,10 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         //[HttpGet("GetShop")]
         //[AllowAnonymous]
-        //public IActionResult GetAsync(Func<ShopPostDto, bool> predicate)
+        //public Task<List<Client>> GetAsync(Expression<Func<Client, bool>> predicate)
         //{
-        //    _shopService.GetAsync(predicate);
-        //    return Ok();
+        //    var clients = _clientService.GetAsync(predicate);
+        //    return clients;
         //}
 
         [HttpGet("GetAllClients")]

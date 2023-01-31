@@ -1,4 +1,6 @@
-﻿using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+﻿using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
+using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -15,17 +17,18 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             _dbSet = context.Set<TEntity>();
         }
 
-        public Task<List<TEntity>> GetAsync()
-            => _dbSet.AsNoTracking().ToListAsync();
+        //public Task<List<TEntity>> GetAllAsync()
+        //    => _dbSet.AsNoTracking().ToListAsync();
 
-        //public List<TEntity> GetAsync(Func<TEntity, bool> predicate) // Исправить
-        //{
-        //    return _dbSet.Where(predicate).ToList();
-        //}
 
-        public async Task<List<TEntity>> GetAll()
+        public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate) // Исправить
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)

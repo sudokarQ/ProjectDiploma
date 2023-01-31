@@ -1,10 +1,12 @@
 ﻿using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
+using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IClientService
     {
-        Task<List<ClientPostDto>> GetAsync(Func<ClientPostDto, bool> predicate);
+        Task<List<ClientPostDto>> GetAsync(Expression<Func<Client, bool>> predicate);
         Task CreateAsync(ClientPostDto client);
         Task<ClientPostDto> FindByIdAsync(Guid id);
         Task<ClientPostDto> FindByNameAsync(string name);

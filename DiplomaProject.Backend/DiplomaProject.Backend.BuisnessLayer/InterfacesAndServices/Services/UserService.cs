@@ -54,7 +54,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<UserPostDto>> GetAllAsync()
         {
-            var users = await _userRepository.GetAsync();
+            var users = await _userRepository.GetAllAsync();
             return users.Select(x => new UserPostDto
             {
                 Login = x.Login,
@@ -79,7 +79,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(user.Login) || string.IsNullOrEmpty(user.Password))
                 return false;
 
-            if (_userRepository.Find(x => x.Login == user.Login).Any())
+            if (_userRepository.FirstOrDefault(x => x.Login == user.Login) is not null)
                 return false;
 
             return true;

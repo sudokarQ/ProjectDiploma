@@ -10,5 +10,6 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Order
         public TimeOnly Time { get; set; }
         [Required]
         public bool OnDelivery { get; set; }
+
     }
 }

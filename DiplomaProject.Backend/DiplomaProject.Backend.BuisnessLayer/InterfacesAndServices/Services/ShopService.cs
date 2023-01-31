@@ -7,7 +7,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
     public class ShopService : IShopService
     {
         private readonly IShopRepository _shopRepository;
-        
+
         public ShopService(IShopRepository shopRepository)
         {
             _shopRepository = shopRepository;
@@ -54,20 +54,20 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<List<ShopPostDto>> GetAllAsync()
         {
-            var shops = await _shopRepository.GetAsync();
+            var shops = await _shopRepository.GetAllAsync();
             return shops.Select(x => new ShopPostDto { Name = x.Name, Description = x.Description }).ToList();
         }
 
-        public void Remove(ShopPostDto shopDto)
+        public async void Remove(ShopPostDto shopDto)
         {
             var shop = _shopRepository.FirstOrDefault(x => x.Name == shopDto.Name);
-            _shopRepository.RemoveAsync(shop);
+            await _shopRepository.RemoveAsync(shop);
         }
 
-        public void Update(ShopPostDto shopDto)
+        public async void Update(ShopPostDto shopDto)
         {
             var shop = _shopRepository.FirstOrDefault(x => x.Name == shopDto.Name);
-            _shopRepository.UpdateAsync(shop);
+            await _shopRepository.UpdateAsync(shop);
         }
 
         private bool Validation(ShopPostDto shop)
@@ -75,7 +75,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(shop.Name))
                 return false;
 
-            if (_shopRepository.Find(x => x.Name == shop.Name).Any())
+            if (_shopRepository.FirstOrDefault(x => x.Name == shop.Name) is not null)
                 return false;
 
             return true;
