@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -77,7 +78,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (service is null)
+            if (service is null || !Validation(editedService))
                 return;
 
             service.Name = editedService.Name;
@@ -89,7 +90,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         private bool Validation(ServicePostDto service)
         {
-            if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price == 0)
+            if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price < 0)
                 return false;
 
             //if (_serviceRepository.FirstOrDefaultAsync(x => x.Name == service.Name) is not null)

@@ -89,7 +89,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (promotion is null)
+            if (promotion is null || !Validation(editedPromotion))
                 return;
 
             promotion.Name = editedPromotion.Name;
@@ -103,6 +103,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         private bool Validation(PromotionPostDto promotion)
         {
             if (string.IsNullOrEmpty(promotion.Name))
+                return false;
+
+            if (promotion.DiscountPercent < 0 || promotion.DiscountPercent > 100) 
                 return false;
 
             return true;

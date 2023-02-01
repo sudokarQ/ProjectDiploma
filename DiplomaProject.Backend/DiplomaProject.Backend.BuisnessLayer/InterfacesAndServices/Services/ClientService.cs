@@ -1,9 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -18,7 +15,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task CreateAsync(ClientPostDto client)
         {
-            if (Validation(client))
+            if (await Validation(client))
                 await _clientRepository.CreateAsync(new()
                 {
                     Id = new Guid(),
@@ -87,6 +84,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (client is null)
                 return;
 
+            if (!await Validation(editedClient))
+                throw new Exception("Validation declined"); ;
+
             client.Name = editedClient.Name;
             client.Surname = editedClient.Surname;
             client.PhoneNumber = editedClient.PhoneNumber;
@@ -94,16 +94,15 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _clientRepository.UpdateAsync(client);
         }
 
-        private bool Validation(ClientPostDto client)
+        private async Task<bool> Validation(ClientPostDto client)
         {
             if (string.IsNullOrEmpty(client.Name) || string.IsNullOrEmpty(client.Surname) || string.IsNullOrEmpty(client.PhoneNumber))
                 return false;
 
-            //if (_clientRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
-            //    return false;
+            bool haveAny = await _clientRepository.AnyAsync(x => x.PhoneNumber == client.PhoneNumber);
 
-            //if (_clientRepository.FirstOrDefaultAsync(x => x.PhoneNumber == client.PhoneNumber) is not null)
-            //    return false;
+            if (haveAny)
+                return false;
 
             return true;
         }

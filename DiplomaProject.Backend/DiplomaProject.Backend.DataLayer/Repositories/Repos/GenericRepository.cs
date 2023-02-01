@@ -1,5 +1,6 @@
 ﻿using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
@@ -51,6 +52,11 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
         public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate); //can't convert threading cancelletion token
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }

@@ -33,9 +33,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPost("CreateOrder")]
         [AllowAnonymous]
-        public IActionResult CreateAsync(OrderPostDto orderPostDto)
+        public async Task<IActionResult> CreateAsync(OrderPostDto orderPostDto)
         {
-            _orderService.CreateAsync(orderPostDto);
+            await _orderService.CreateAsync(orderPostDto);
             return Ok();
         }
 

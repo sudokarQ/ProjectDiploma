@@ -85,7 +85,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             var shop =  await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (shop is null)
+            if (shop is null || !Validation(editedShop))
                 return;
 
             shop.Name = editedShop.Name;

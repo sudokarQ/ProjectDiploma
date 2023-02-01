@@ -11,5 +11,6 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
         Task UpdateAsync(TEntity item);
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
         Task<List<TEntity>> GetAllAsync();
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

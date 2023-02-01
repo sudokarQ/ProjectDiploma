@@ -32,9 +32,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPost("CreatePromotion")]
         [AllowAnonymous]
-        public IActionResult CreateAsync(PromotionPostDto PromotionPostDto)
+        public async Task<IActionResult> CreateAsync(PromotionPostDto PromotionPostDto)
         {
-            _promotionService.CreateAsync(PromotionPostDto);
+            await _promotionService.CreateAsync(PromotionPostDto);
             return Ok();
         }
 

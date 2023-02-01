@@ -32,9 +32,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPost("CreateShop")]
         [AllowAnonymous]
-        public IActionResult CreateAsync(ShopPostDto shopPostDto)
+        public async Task<IActionResult> CreateAsync(ShopPostDto shopPostDto)
         {
-            _shopService.CreateAsync(shopPostDto);
+            await _shopService.CreateAsync(shopPostDto);
             return Ok();
         }
 

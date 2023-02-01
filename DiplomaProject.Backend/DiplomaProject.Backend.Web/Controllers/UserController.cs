@@ -33,9 +33,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPost("CreateUser")]
         [AllowAnonymous]
-        public IActionResult CreateAsync(UserPostDto UserPostDto)
+        public async Task<IActionResult> CreateAsync(UserPostDto UserPostDto)
         {
-            _userService.CreateAsync(UserPostDto);
+            await _userService.CreateAsync(UserPostDto);
             return Ok();
         }
 

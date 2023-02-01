@@ -16,7 +16,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task CreateAsync(UserPostDto user)
         {
-            if (Validation(user))
+            if (await Validation(user))
                 await _userRepository.CreateAsync(new()
                 {
                     Id = new Guid(),
@@ -76,19 +76,24 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (user is null)
                 return;
 
+            if (!await Validation(editedUser))
+                throw new Exception("Validation declined");
+
             user.Login = editedUser.Login;
             user.Password = editedUser.Password;
 
             await _userRepository.UpdateAsync(user);
         }
 
-        private bool Validation(UserPostDto user)
+        private async Task<bool> Validation(UserPostDto user)
         {
             if (string.IsNullOrEmpty(user.Login) || string.IsNullOrEmpty(user.Password))
                 return false;
 
-            //if (_userRepository.FirstOrDefaultAsync(x => x.Login == user.Login) is not null)
-            //    return false;
+            bool isAny = await _userRepository.AnyAsync(x => x.Login == user.Login);
+
+            if (isAny) 
+                return false;
 
             return true;
         }
