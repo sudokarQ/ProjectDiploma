@@ -4,6 +4,7 @@ using DiplomaProject.Backend.Common.Models.Dto.Shop;
 using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 using DiplomaProject.Backend.DataLayer.Repositories.Repos;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -80,9 +81,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _shopRepository.RemoveAsync(shop);
         }
 
-        public async Task Update(Guid id) //дописать
+        public async Task UpdateAsync(Guid id, ShopPostDto editedShop)
         {
             var shop =  await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (shop is null)
+                return;
+
+            shop.Name = editedShop.Name;
+            shop.Description = editedShop.Description;
+
             await _shopRepository.UpdateAsync(shop);
         }
 

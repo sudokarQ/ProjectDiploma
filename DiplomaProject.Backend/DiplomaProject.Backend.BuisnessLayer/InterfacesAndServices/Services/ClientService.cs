@@ -2,6 +2,7 @@
 using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -79,9 +80,17 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _clientRepository.RemoveAsync(client);
         }
 
-        public async Task UpdateAsync(ClientPostDto clientDto)
+        public async Task UpdateAsync(Guid id, ClientPostDto editedClient)
         {
-            var client = await _clientRepository.FirstOrDefaultAsync(x => x.PhoneNumber == clientDto.PhoneNumber);
+            var client = await _clientRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (client is null)
+                return;
+
+            client.Name = editedClient.Name;
+            client.Surname = editedClient.Surname;
+            client.PhoneNumber = editedClient.PhoneNumber;
+
             await _clientRepository.UpdateAsync(client);
         }
 

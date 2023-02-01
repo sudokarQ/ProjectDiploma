@@ -50,9 +50,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPut("UpdateClient")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(ClientPostDto clientPostDto)
+        public async Task<IActionResult> Update(Guid id, ClientPostDto editedClient)
         {
-            await _clientService.UpdateAsync(clientPostDto);
+            await _clientService.UpdateAsync(id, editedClient);
             return Ok();
         }
 

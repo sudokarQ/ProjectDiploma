@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.User;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -68,9 +69,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _userRepository.RemoveAsync(user);
         }
 
-        public async Task UpdateAsync(UserPostDto userDto)
+        public async Task UpdateAsync(Guid id, UserPostDto editedUser)
         {
-            var user = await _userRepository.FirstOrDefaultAsync(x => x.Login == userDto.Login);
+            var user = await _userRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user is null)
+                return;
+
+            user.Login = editedUser.Login;
+            user.Password = editedUser.Password;
+
             await _userRepository.UpdateAsync(user);
         }
 

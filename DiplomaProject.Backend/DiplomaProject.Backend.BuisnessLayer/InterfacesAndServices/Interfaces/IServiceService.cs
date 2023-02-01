@@ -9,7 +9,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task<ServicePostDto> FindByIdAsync(Guid id);
         Task<ServicePostDto> FindByNameAsync(string name);
         Task RemoveAsync(Guid id);
-        Task UpdateAsync(ServicePostDto item);
+        Task UpdateAsync(Guid id, ServicePostDto editedService);
         Task<List<ServicePostDto>> GetAllAsync();
     }
 }

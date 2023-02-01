@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -72,9 +73,17 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _serviceRepository.RemoveAsync(service);
         }
 
-        public async Task UpdateAsync(ServicePostDto serviceDto)
+        public async Task UpdateAsync(Guid id, ServicePostDto editedService)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Name == serviceDto.Name);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (service is null)
+                return;
+
+            service.Name = editedService.Name;
+            service.TypeService = editedService.TypeService;
+            service.Price = editedService.Price;
+
             await _serviceRepository.UpdateAsync(service);
         }
 

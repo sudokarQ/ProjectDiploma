@@ -59,9 +59,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _orderRepository.RemoveAsync(order);
         }
 
-        public async Task UpdateAsync(OrderPostDto orderDto)
+        public async Task UpdateAsync(Guid id, OrderPostDto editedOrder)
         {
-            var order = await _orderRepository.FirstOrDefaultAsync(x => x.DateTime == orderDto.DateTime);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (order is null)
+                return;
+
+            order.DateTime = editedOrder.DateTime;
+            order.Status = editedOrder.Status;
+
             await _orderRepository.UpdateAsync(order);
         }
 

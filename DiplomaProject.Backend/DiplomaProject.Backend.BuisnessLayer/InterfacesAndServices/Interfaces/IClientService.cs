@@ -11,7 +11,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task<ClientPostDto> FindByIdAsync(Guid id);
         Task<ClientPostDto> FindByNameAsync(string name);
         Task RemoveAsync(Guid id);
-        Task UpdateAsync(ClientPostDto item);
+        Task UpdateAsync(Guid id, ClientPostDto editedClient);
         Task<List<ClientPostDto>> GetAllAsync();
     }
 }

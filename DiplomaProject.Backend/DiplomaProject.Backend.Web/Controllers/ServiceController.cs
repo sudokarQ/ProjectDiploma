@@ -49,9 +49,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpPut("UpdateService")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(ServicePostDto servicePostDto)
+        public async Task<IActionResult> Update(Guid id, ServicePostDto editedService)
         {
-            await _serviceService.UpdateAsync(servicePostDto);
+            await _serviceService.UpdateAsync(id, editedService);
             return Ok();
         }
 

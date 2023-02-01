@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -84,9 +85,18 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _promotionRepository.RemoveAsync(promotion);
         }
 
-        public async Task Update(PromotionPostDto promotionDto)
+        public async Task UpdateAsync(Guid id, PromotionPostDto editedPromotion)
         {
-            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Name == promotionDto.Name);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (promotion is null)
+                return;
+
+            promotion.Name = editedPromotion.Name;
+            promotion.Description = editedPromotion.Description;
+            promotion.DiscountPercent = editedPromotion.DiscountPercent;
+            promotion.IsCorporate = editedPromotion.IsCorporate;
+
             await _promotionRepository.UpdateAsync(promotion);
         }
 
