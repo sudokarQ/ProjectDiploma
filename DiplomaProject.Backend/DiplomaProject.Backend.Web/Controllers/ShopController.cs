@@ -40,17 +40,17 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteShop")]
         [AllowAnonymous]
-        public IActionResult Remove(ShopPostDto shopPostDto)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            _shopService.Remove(shopPostDto);
+            await _shopService.RemoveAsync(id);
             return Ok();
         }
 
         [HttpPut("UpdateShop")]
         [AllowAnonymous]
-        public IActionResult Update(ShopPostDto shopPostDto)
+        public async Task<IActionResult> Update(Guid id)
         {
-            _shopService.Update(shopPostDto);
+            await _shopService.Update(id);
             return Ok();
         }
 
@@ -58,8 +58,8 @@ namespace DiplomaProject.Backend.Web.Controllers
         [AllowAnonymous]
         public async Task<ShopPostDto> FindByIdAsync(Guid id)
         {
-            var shopDto = await _shopService.FindById(id);
-            if (shopDto == null)
+            var shopDto = await _shopService.FindByIdAsync(id);
+            if (shopDto is null)
                 return null;
 
             return shopDto;

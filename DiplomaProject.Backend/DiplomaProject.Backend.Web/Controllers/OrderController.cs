@@ -41,9 +41,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteOrder")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(OrderPostDto orderPostDto)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            await _orderService.RemoveAsync(orderPostDto);
+            await _orderService.RemoveAsync(id);
             return Ok();
         }
 

@@ -29,7 +29,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<ShopPostDto> FindById(Guid id)
+        public async Task<ShopPostDto> FindByIdAsync(Guid id)
         {
             var shop = await _shopRepository.FindByIdAsync(id);
             if (shop is not null)
@@ -43,7 +43,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             return null;
         }
 
-        public async Task<ShopPostDto> FindByName(string name)
+        public async Task<ShopPostDto> FindByNameAsync(string name)
         {
             var shop = await _shopRepository.FindByNameAsync(name);
             if (shop != null)
@@ -74,15 +74,15 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             return shops.Select(x => new ShopPostDto { Name = x.Name, Description = x.Description }).ToList();
         }
 
-        public async Task Remove(ShopPostDto shopDto)
+        public async Task RemoveAsync(Guid id)
         {
-            var shop = await _shopRepository.FirstOrDefaultAsync(x => x.Name == shopDto.Name);
+            var shop = await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
             await _shopRepository.RemoveAsync(shop);
         }
 
-        public async Task Update(ShopPostDto shopDto) //дописать
+        public async Task Update(Guid id) //дописать
         {
-            var shop =  await _shopRepository.FirstOrDefaultAsync(x => x.Name == shopDto.Name);
+            var shop =  await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
             await _shopRepository.UpdateAsync(shop);
         }
 

@@ -13,10 +13,10 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             _promotionRepository = promotionRepository;
         }
 
-        public void CreateAsync(PromotionPostDto promotion) //потом на таски заменить
+        public async Task CreateAsync(PromotionPostDto promotion) //потом на таски заменить
         {
             if (Validation(promotion))
-                _promotionRepository.CreateAsync(new()
+                await _promotionRepository.CreateAsync(new()
                 {
                     Id = new Guid(),
                     Name = promotion.Name,
@@ -78,13 +78,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public async void Remove(PromotionPostDto promotionDto)
+        public async Task RemoveAsync(Guid id)
         {
-            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Name == promotionDto.Name);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == id);
             await _promotionRepository.RemoveAsync(promotion);
         }
 
-        public async void Update(PromotionPostDto promotionDto)
+        public async Task Update(PromotionPostDto promotionDto)
         {
             var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Name == promotionDto.Name);
             await _promotionRepository.UpdateAsync(promotion);

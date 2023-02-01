@@ -66,9 +66,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public async Task RemoveAsync(ServicePostDto serviceDto)
+        public async Task RemoveAsync(Guid id)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Name == serviceDto.Name && x.TypeService == serviceDto.TypeService);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
             await _serviceRepository.RemoveAsync(service);
         }
 

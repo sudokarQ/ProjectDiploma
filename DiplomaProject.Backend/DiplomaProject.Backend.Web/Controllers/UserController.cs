@@ -41,9 +41,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteUser")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(UserPostDto UserPostDto)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            await _userService.RemoveAsync(UserPostDto);
+            await _userService.RemoveAsync(id);
             return Ok();
         }
 

@@ -41,9 +41,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteService")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(ServicePostDto servicePostDto)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            await _serviceService.RemoveAsync(servicePostDto);
+            await _serviceService.RemoveAsync(id);
             return Ok();
         }
 

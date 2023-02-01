@@ -10,7 +10,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task CreateAsync(ClientPostDto client);
         Task<ClientPostDto> FindByIdAsync(Guid id);
         Task<ClientPostDto> FindByNameAsync(string name);
-        Task RemoveAsync(ClientPostDto item);
+        Task RemoveAsync(Guid id);
         Task UpdateAsync(ClientPostDto item);
         Task<List<ClientPostDto>> GetAllAsync();
     }

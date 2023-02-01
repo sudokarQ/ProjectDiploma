@@ -53,9 +53,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public async Task RemoveAsync(OrderPostDto orderDto)
+        public async Task RemoveAsync(Guid id)
         {
-            var order = await _orderRepository.FirstOrDefaultAsync(x => x.DateTime == orderDto.DateTime);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == id);
             await _orderRepository.RemoveAsync(order);
         }
 

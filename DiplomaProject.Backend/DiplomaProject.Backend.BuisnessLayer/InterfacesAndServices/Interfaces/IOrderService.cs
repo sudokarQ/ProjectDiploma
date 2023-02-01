@@ -7,7 +7,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
     {
         Task<List<OrderPostDto>> GetAsync(Func<OrderPostDto, bool> predicate);
         Task CreateAsync(OrderPostDto shop);
-        Task RemoveAsync(OrderPostDto item);
+        Task RemoveAsync(Guid id);
         Task UpdateAsync(OrderPostDto item);
         Task<List<OrderPostDto>> GetAllAsync();
         Task<OrderPostDto> FindByIdAsync(Guid id);

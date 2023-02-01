@@ -40,17 +40,17 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeletePromotion")]
         [AllowAnonymous]
-        public IActionResult Remove(PromotionPostDto PromotionPostDto)
+        public async Task<IActionResult> Remove(Guid id)
         {
-            _promotionService.Remove(PromotionPostDto);
+            await _promotionService.RemoveAsync(id);
             return Ok();
         }
 
         [HttpPut("UpdatePromotion")]
         [AllowAnonymous]
-        public IActionResult Update(PromotionPostDto PromotionPostDto)
+        public async Task<IActionResult> Update(PromotionPostDto PromotionPostDto)
         {
-            _promotionService.Update(PromotionPostDto);
+            await _promotionService.Update(PromotionPostDto);
             return Ok();
         }
 
