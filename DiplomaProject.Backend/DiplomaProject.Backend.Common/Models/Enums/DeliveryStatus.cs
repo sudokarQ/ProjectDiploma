@@ -1,12 +1,12 @@
 ﻿namespace DiplomaProject.Backend.Common.DataBaseConfigurations
 {
-    public enum DeliveryStatus
+    public enum OrderStatus
     {
         Accepted,
         Preparing,
         Transiting,
         Delivery,
         Closed,
-        Cancelled
+        Cancelled,
     }
 }

@@ -51,9 +51,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }!;
         }
 
-        public async Task<List<ClientPostDto>> GetAsync(Expression<Func<Client, bool>> predicate)
+        public async Task<List<ClientPostDto>> GetAsync()
         {
-            var clients = await _clientRepository.GetAsync(predicate);
+            var clients = await _clientRepository.GetAsync(x => x.Name == "123");
             return clients.Select(x => new ClientPostDto
             {
                 Name = x.Name,
@@ -75,13 +75,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task RemoveAsync(ClientPostDto clientDto)
         {
-            var client = _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber && x.Surname == clientDto.Surname);
+            var client = await _clientRepository.FirstOrDefaultAsync(x => x.PhoneNumber == clientDto.PhoneNumber && x.Surname == clientDto.Surname);
             await _clientRepository.RemoveAsync(client);
         }
 
         public async Task UpdateAsync(ClientPostDto clientDto)
         {
-            var client =  _clientRepository.FirstOrDefault(x => x.PhoneNumber == clientDto.PhoneNumber);
+            var client = await _clientRepository.FirstOrDefaultAsync(x => x.PhoneNumber == clientDto.PhoneNumber);
             await _clientRepository.UpdateAsync(client);
         }
 
@@ -93,8 +93,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             //if (_clientRepository.Find(x => x.PhoneNumber == client.PhoneNumber).Any())
             //    return false;
 
-            if (_clientRepository.FirstOrDefault(x => x.PhoneNumber == client.PhoneNumber) is not null)
-                return false;
+            //if (_clientRepository.FirstOrDefaultAsync(x => x.PhoneNumber == client.PhoneNumber) is not null)
+            //    return false;
 
             return true;
         }

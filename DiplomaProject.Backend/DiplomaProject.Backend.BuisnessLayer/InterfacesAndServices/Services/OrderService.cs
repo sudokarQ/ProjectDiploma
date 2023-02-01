@@ -1,5 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Order;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -18,9 +19,9 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (Validation(order))
                 await _orderRepository.CreateAsync(new()
                 {
-                    Date = order.Date,
-                    Time = order.Time,
-                    OnDelivery = order.OnDelivery,
+                    Id = new Guid(),
+                    DateTime = order.DateTime,
+                    Status = order.Status,
                 });
             else
                 throw new Exception("Validation declined");
@@ -31,9 +32,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var order = await _orderRepository.FindByIdAsync(id);
             return order is null ? null : new OrderPostDto
             {
-                Date = order.Date,
-                Time = order.Time,
-                OnDelivery = order.OnDelivery,
+                DateTime = order.DateTime,
+                Status = order.Status,
             };
         }
 
@@ -48,28 +48,27 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var orders = await _orderRepository.GetAllAsync();
             return orders.Select(x => new OrderPostDto
             {
-                Date = x.Date,
-                Time = x.Time,
-                OnDelivery = x.OnDelivery,
+                DateTime = x.DateTime,
+                Status = x.Status,
             }).ToList();
         }
 
         public async Task RemoveAsync(OrderPostDto orderDto)
         {
-            var order = _orderRepository.FirstOrDefault(x => x.Date == orderDto.Date && x.Time == orderDto.Time);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.DateTime == orderDto.DateTime);
             await _orderRepository.RemoveAsync(order);
         }
 
         public async Task UpdateAsync(OrderPostDto orderDto)
         {
-            var order = _orderRepository.FirstOrDefault(x => x.Date == orderDto.Date && x.Time == orderDto.Time);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.DateTime == orderDto.DateTime);
             await _orderRepository.UpdateAsync(order);
         }
 
         private bool Validation(OrderPostDto order)
         {
-            if (_orderRepository.FirstOrDefault(x => x.Date == order.Date && x.Time == order.Time) is not null) //поменять
-                return false;
+            //if (_orderRepository.FirstOrDefaultAsync(x => x.DateTime == order.DateTime) is not null) //поменять
+            //    return false;
 
             return true;
         }

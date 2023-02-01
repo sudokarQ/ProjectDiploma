@@ -1,6 +1,4 @@
-﻿using DiplomaProject.Backend.Common.Models.Dto.Client;
-using DiplomaProject.Backend.Common.Models.Entity;
-using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+﻿using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -17,13 +15,9 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             _dbSet = context.Set<TEntity>();
         }
 
-        //public Task<List<TEntity>> GetAllAsync()
-        //    => _dbSet.AsNoTracking().ToListAsync();
-
-
         public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate) // Исправить
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return await _dbSet.Where(predicate).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<TEntity>> GetAllAsync()
@@ -31,9 +25,9 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbSet.Where(predicate);
+            return _dbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
         public async Task CreateAsync(TEntity item)
@@ -54,9 +48,9 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             await _context.SaveChangesAsync();
         }
 
-        public TEntity FirstOrDefault(Func<TEntity, bool> predicate)
+        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbSet.FirstOrDefault(predicate); //can't convert threading cancelletion token
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate); //can't convert threading cancelletion token
         }
     }
 }

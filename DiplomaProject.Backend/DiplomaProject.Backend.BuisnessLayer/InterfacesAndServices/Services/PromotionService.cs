@@ -80,13 +80,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async void Remove(PromotionPostDto promotionDto)
         {
-            var promotion = _promotionRepository.FirstOrDefault(x => x.Name == promotionDto.Name);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Name == promotionDto.Name);
             await _promotionRepository.RemoveAsync(promotion);
         }
 
         public async void Update(PromotionPostDto promotionDto)
         {
-            var promotion = _promotionRepository.FirstOrDefault(x => x.Name == promotionDto.Name);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Name == promotionDto.Name);
             await _promotionRepository.UpdateAsync(promotion);
         }
 

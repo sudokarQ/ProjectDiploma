@@ -68,13 +68,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task RemoveAsync(ServicePostDto serviceDto)
         {
-            var service = _serviceRepository.FirstOrDefault(x => x.Name == serviceDto.Name && x.TypeService == serviceDto.TypeService);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Name == serviceDto.Name && x.TypeService == serviceDto.TypeService);
             await _serviceRepository.RemoveAsync(service);
         }
 
         public async Task UpdateAsync(ServicePostDto serviceDto)
         {
-            var service = _serviceRepository.FirstOrDefault(x => x.Name == serviceDto.Name);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Name == serviceDto.Name);
             await _serviceRepository.UpdateAsync(service);
         }
 
@@ -83,8 +83,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price == 0)
                 return false;
 
-            if (_serviceRepository.FirstOrDefault(x => x.Name == service.Name) is not null)
-                return false;
+            //if (_serviceRepository.FirstOrDefaultAsync(x => x.Name == service.Name) is not null)
+            //    return false;
 
             return true;
         }

@@ -6,7 +6,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IClientService
     {
-        Task<List<ClientPostDto>> GetAsync(Expression<Func<Client, bool>> predicate);
+        Task<List<ClientPostDto>> GetAsync();
         Task CreateAsync(ClientPostDto client);
         Task<ClientPostDto> FindByIdAsync(Guid id);
         Task<ClientPostDto> FindByNameAsync(string name);

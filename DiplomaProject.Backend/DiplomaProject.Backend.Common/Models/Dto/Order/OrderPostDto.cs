@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DiplomaProject.Backend.Common.DataBaseConfigurations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaProject.Backend.Common.Models.Dto.Order
 {
     public class OrderPostDto
     {
         [Required]
-        public DateOnly Date { get; set; }
+        public DateTime DateTime { get; set; }
+
         [Required]
-        public TimeOnly Time { get; set; }
-        [Required]
-        public bool OnDelivery { get; set; }
+        public OrderStatus Status { get; set; }
+
 
     }
 }

@@ -64,13 +64,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task RemoveAsync(UserPostDto userDto)
         {
-            var user = _userRepository.FirstOrDefault(x => x.Login == userDto.Login);
+            var user = await _userRepository.FirstOrDefaultAsync(x => x.Login == userDto.Login);
             await _userRepository.RemoveAsync(user);
         }
 
         public async Task UpdateAsync(UserPostDto userDto)
         {
-            var user = _userRepository.FirstOrDefault(x => x.Login == userDto.Login);
+            var user = await _userRepository.FirstOrDefaultAsync(x => x.Login == userDto.Login);
             await _userRepository.UpdateAsync(user);
         }
 
@@ -79,8 +79,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(user.Login) || string.IsNullOrEmpty(user.Password))
                 return false;
 
-            if (_userRepository.FirstOrDefault(x => x.Login == user.Login) is not null)
-                return false;
+            //if (_userRepository.FirstOrDefaultAsync(x => x.Login == user.Login) is not null)
+            //    return false;
 
             return true;
         }

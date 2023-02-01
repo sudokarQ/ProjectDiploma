@@ -16,13 +16,13 @@ namespace DiplomaProject.Backend.Web.Controllers
             _clientService = clientService;
         }
 
-        //[HttpGet("GetShop")]
-        //[AllowAnonymous]
-        //public Task<List<Client>> GetAsync(Expression<Func<Client, bool>> predicate)
-        //{
-        //    var clients = _clientService.GetAsync(predicate);
-        //    return clients;
-        //}
+        [HttpGet("GetClient")]
+        [AllowAnonymous]
+        public async Task<List<ClientPostDto>> GetAsync()
+        {
+            var clients = await _clientService.GetAsync();
+            return clients;
+        }
 
         [HttpGet("GetAllClients")]
         [AllowAnonymous]

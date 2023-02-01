@@ -17,6 +17,6 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
 
         public Task<Order> FindByIdAsync(Guid id) => _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
-        public Task<Order> FindByDateAndTimeAsync(DateOnly date, TimeOnly time) => _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Date == date && x.Time == time);
+        public Task<Order> FindByDateAndTimeAsync(DateTime date) => _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.DateTime == date);
     }
 }
