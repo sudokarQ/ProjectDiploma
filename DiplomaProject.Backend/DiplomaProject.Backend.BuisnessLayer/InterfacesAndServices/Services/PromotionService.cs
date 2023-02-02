@@ -24,6 +24,10 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Description = promotion.Description,
                     DiscountPercent = promotion.DiscountPercent,
                     IsCorporate = promotion.IsCorporate,
+                    BeginDate= promotion.BeginDate,
+                    EndDate = promotion.EndDate,
+                    CompanyPercent = promotion.CompanyPercent,
+                    Service = promotion.Service,
                 });
             else
                 throw new Exception("Validation declined");
