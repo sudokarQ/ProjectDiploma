@@ -6,9 +6,10 @@ namespace DiplomaProject.Backend.Common.Models.Entity
 {
     public class Order
     {
-        [Key]
         public Guid Id { get; set; }
         public DateTime DateTime { get; set; }
+
+        public decimal TotaPrice { get; set; }
 
         public OrderStatus Status { get; set; }
         public TypeOrder Type { get; set; }

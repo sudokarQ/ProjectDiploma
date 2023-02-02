@@ -8,7 +8,7 @@
         public DateTime? BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
         public decimal DiscountPercent { get; set; }
-        public string? CompanyName { get; set; }
+
         public bool IsCorporate { get; set; }
         public decimal? CompanyPercent { get; set; }
 
