@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -92,6 +93,19 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             client.PhoneNumber = editedClient.PhoneNumber;
 
             await _clientRepository.UpdateAsync(client);
+        }
+
+        public async Task<List<ClientPostDto>> GetListByName(string name)
+        {
+            var clients = await _clientRepository.GetAsync(x => x.Name.StartsWith(name));
+            //clients.OrderBy(x => x.Name).ThenBy(x => x.Surname);
+
+            return clients.Select(x => new ClientPostDto
+            {
+                Name = x.Name,
+                Surname = x.Surname,
+                PhoneNumber = x.PhoneNumber,
+            }).OrderBy(x => x.Name).ThenBy(x => x.Surname).ToList();
         }
 
         private async Task<bool> Validation(ClientPostDto client)

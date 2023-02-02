@@ -13,5 +13,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task RemoveAsync(Guid id);
         Task UpdateAsync(Guid id, ClientPostDto editedClient);
         Task<List<ClientPostDto>> GetAllAsync();
+        Task<List<ClientPostDto>> GetListByName(string name);
     }
 }

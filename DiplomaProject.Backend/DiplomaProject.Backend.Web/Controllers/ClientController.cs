@@ -32,6 +32,14 @@ namespace DiplomaProject.Backend.Web.Controllers
             return clients;
         }
 
+        [HttpGet("GetClientsByName")]
+        [AllowAnonymous]
+        public Task<List<ClientPostDto>> GetListByName(string name)
+        {
+            var clients = _clientService.GetListByName(name);
+            return clients;
+        }
+
         [HttpPost("CreateClient")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateAsync(ClientPostDto clientPostDto)
