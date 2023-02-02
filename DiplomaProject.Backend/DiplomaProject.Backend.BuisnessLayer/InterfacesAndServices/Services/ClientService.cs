@@ -1,7 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -33,6 +32,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var client = await _clientRepository.FindByIdAsync(id);
             return client is null ? null : new ClientPostDto
             {
+                Id = client.Id,
                 Name = client.Name,
                 Surname = client.Surname,
                 PhoneNumber = client.PhoneNumber,
@@ -44,6 +44,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var client = await _clientRepository.FindByNameAsync(name);
             return client is null ? null : new ClientPostDto
             {
+                Id = client.Id,
                 Name = client.Name,
                 Surname = client.Surname,
                 PhoneNumber = client.PhoneNumber,
@@ -55,6 +56,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var clients = await _clientRepository.GetAsync(x => x.Name == "123");
             return clients.Select(x => new ClientPostDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
@@ -66,6 +68,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var clients = await _clientRepository.GetAllAsync();
             return clients.Select(x => new ClientPostDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
@@ -98,10 +101,10 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         public async Task<List<ClientPostDto>> GetListByName(string name)
         {
             var clients = await _clientRepository.GetAsync(x => x.Name.StartsWith(name));
-            //clients.OrderBy(x => x.Name).ThenBy(x => x.Surname);
 
             return clients.Select(x => new ClientPostDto
-            {
+            {   
+                Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
