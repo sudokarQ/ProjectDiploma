@@ -1,6 +1,8 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+using DiplomaProject.Backend.DataLayer.Repositories.Repos;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -39,16 +41,17 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             };
         }
 
-        public async Task<ServicePostDto> FindByNameAsync(string name)
+        public async Task<List<ServicePostDto>> GetListByNameAsync(string name)
         {
-            var service = await _serviceRepository.FindByNameAsync(name);
-            return service is null ? null : new ServicePostDto
+            var services = await _serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+
+            return services.Select(x => new ServicePostDto
             {
-                Id = service.Id,
-                Name = service.Name,
-                TypeService = service.TypeService,
-                Price = service.Price,
-            }!;
+                Id = x.Id,
+                Name = x.Name,
+                TypeService = x.TypeService,
+                Price = x.Price,
+            }).OrderBy(x => x.Name).ThenBy(x => x.TypeService).ToList();
         }
 
         public async Task<List<ServicePostDto>> GetAllAsync()

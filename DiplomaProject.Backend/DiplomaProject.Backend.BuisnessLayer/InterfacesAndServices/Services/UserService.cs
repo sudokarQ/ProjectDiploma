@@ -37,14 +37,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             };
         }
 
-        public async Task<UserPostDto> FindByLoginAsync(string login)
+        public async Task<List<UserPostDto>> GetListByLoginAsync(string name)
         {
-            var user = await _userRepository.FindByLoginAsync(login);
-            return user is null ? null : new UserPostDto
-            {   Id = user.Id,
-                Login = user.Login,
-                Password = user.Password,
-            }!;
+            var users = await _userRepository.GetAsync(x => x.Login.ToLower().StartsWith(name.ToLower()));
+
+            return users.Select(x => new UserPostDto
+            {
+                Id = x.Id,
+                Login = x.Login,
+                Password = x.Password,
+            }).OrderBy(x => x.Login).ThenBy(x => x.Password).ToList();
         }
 
         public async Task<List<UserPostDto>> GetAllAsync()

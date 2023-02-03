@@ -1,5 +1,4 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
-using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +20,14 @@ namespace DiplomaProject.Backend.Web.Controllers
         public Task<List<ServicePostDto>> GetAllAsync()
         {
             var services = _serviceService.GetAllAsync();
+            return services;
+        }
+
+        [HttpGet("GetServicesByName")]
+        [AllowAnonymous]
+        public Task<List<ServicePostDto>> GetListByName(string name)
+        {
+            var services = _serviceService.GetListByNameAsync(name);
             return services;
         }
 

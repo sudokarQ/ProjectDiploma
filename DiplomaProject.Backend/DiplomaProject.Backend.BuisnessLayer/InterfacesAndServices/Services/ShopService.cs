@@ -1,10 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
-using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Shop;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using DiplomaProject.Backend.DataLayer.Repositories.Repos;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -25,6 +21,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Id = new Guid(),
                     Name = shop.Name,
                     Description = shop.Description,
+                    Adress = shop.Adress,
                 });
             else
                 throw new Exception("Validation declined");
@@ -39,26 +36,24 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 { 
                     Id = shop.Id,
                     Name = shop.Name, 
-                    Description = shop.Description 
+                    Description = shop.Description, 
+                    Adress = shop.Adress
                 };
             }
             return null;
         }
 
-        public async Task<ShopPostDto> FindByNameAsync(string name)
+        public async Task<List<ShopPostDto>> GetListByNameAsync(string name)
         {
-            var shop = await _shopRepository.FindByNameAsync(name);
-            if (shop != null)
-            {
-                return new ShopPostDto
-                {   
-                    Id = shop.Id,
-                    Name = shop.Name,
-                    Description = shop.Description
-                };
-            }
+            var shops = await _shopRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
 
-            return null;
+            return shops.Select(x => new ShopPostDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Adress = x.Adress,
+            }).OrderBy(x => x.Name).ThenBy(x => x.Description).ToList();
         }
 
         public async Task<List<ShopPostDto>> GetAllAsync()
@@ -66,7 +61,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description
+                Description = x.Description,
+                Adress = x.Adress,
             }).ToList();
 
         public async Task RemoveAsync(Guid id)
@@ -84,6 +80,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
             shop.Name = editedShop.Name;
             shop.Description = editedShop.Description;
+            shop.Adress = editedShop.Adress;
 
             await _shopRepository.UpdateAsync(shop);
         }

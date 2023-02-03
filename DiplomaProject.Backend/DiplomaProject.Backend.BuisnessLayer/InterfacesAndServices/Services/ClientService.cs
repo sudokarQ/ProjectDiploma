@@ -1,5 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -22,6 +23,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Name = client.Name,
                     Surname = client.Surname,
                     PhoneNumber = client.PhoneNumber,
+                    Email = client.Email,
                 });
             else
                 throw new Exception("Validation declined");
@@ -39,18 +41,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             };
         }
 
-        public async Task<ClientPostDto> FindByNameAsync(string name)
-        {
-            var client = await _clientRepository.FindByNameAsync(name);
-            return client is null ? null : new ClientPostDto
-            {
-                Id = client.Id,
-                Name = client.Name,
-                Surname = client.Surname,
-                PhoneNumber = client.PhoneNumber,
-            }!;
-        }
-
         public async Task<List<ClientPostDto>> GetAllAsync()
         {
             var clients = await _clientRepository.GetAllAsync();
@@ -60,6 +50,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
+                Email = x.Email,
             }).ToList();
         }
 
@@ -82,13 +73,14 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             client.Name = editedClient.Name;
             client.Surname = editedClient.Surname;
             client.PhoneNumber = editedClient.PhoneNumber;
+            client.Email = editedClient.Email;
 
             await _clientRepository.UpdateAsync(client);
         }
 
         public async Task<List<ClientPostDto>> GetListByNameAsync(string name)
         {
-            var clients = await _clientRepository.GetAsync(x => x.Name.StartsWith(name));
+            var clients = await _clientRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
 
             return clients.Select(x => new ClientPostDto
             {   
@@ -96,6 +88,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
+                Email = x.Email,
             }).OrderBy(x => x.Name).ThenBy(x => x.Surname).ToList();
         }
 

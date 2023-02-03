@@ -1,4 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services;
+using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,14 @@ namespace DiplomaProject.Backend.Web.Controllers
         public Task<List<PromotionPostDto>> GetAllAsync()
         {
             var promotions = _promotionService.GetAllAsync();
+            return promotions;
+        }
+
+        [HttpGet("GetPromotionsByName")]
+        [AllowAnonymous]
+        public Task<List<PromotionPostDto>> GetListByName(string name)
+        {
+            var promotions = _promotionService.GetListByNameAsync(name);
             return promotions;
         }
 

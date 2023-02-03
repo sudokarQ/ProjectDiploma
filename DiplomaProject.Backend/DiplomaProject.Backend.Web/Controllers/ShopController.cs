@@ -1,4 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services;
+using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Shop;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,14 @@ namespace DiplomaProject.Backend.Web.Controllers
         public Task<List<ShopPostDto>> GetAllAsync()
         {
             var shops = _shopService.GetAllAsync();
+            return shops;
+        }
+
+        [HttpGet("GetShopsByName")]
+        [AllowAnonymous]
+        public Task<List<ShopPostDto>> GetListByName(string name)
+        {
+            var shops = _shopService.GetListByNameAsync(name);
             return shops;
         }
 

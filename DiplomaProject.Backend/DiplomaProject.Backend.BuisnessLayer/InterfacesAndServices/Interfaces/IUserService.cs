@@ -6,7 +6,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
     {
         Task CreateAsync(UserPostDto user);
         Task<UserPostDto> FindByIdAsync(Guid id);
-        Task<UserPostDto> FindByLoginAsync(string login);
+        Task<List<UserPostDto>> GetListByLoginAsync(string name);
         Task RemoveAsync(Guid id);
         Task UpdateAsync(Guid id, UserPostDto editedUser);
         Task<List<UserPostDto>> GetAllAsync();

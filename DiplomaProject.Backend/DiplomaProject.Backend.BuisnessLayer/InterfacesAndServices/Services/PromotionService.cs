@@ -13,7 +13,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             _promotionRepository = promotionRepository;
         }
 
-        public async Task CreateAsync(PromotionPostDto promotion) //потом на таски заменить
+        public async Task CreateAsync(PromotionPostDto promotion)
         {
             if (Validation(promotion))
                 await _promotionRepository.CreateAsync(new()
@@ -49,21 +49,23 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             return null;
         }
 
-        public async Task<PromotionPostDto> FindByName(string name)
+
+        public async Task<List<PromotionPostDto>> GetListByNameAsync(string name)
         {
-            var promotion = await _promotionRepository.FindByNameAsync(name);
-            if (promotion != null)
+            var clients = await _promotionRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+
+            return clients.Select(x => new PromotionPostDto
             {
-                return new PromotionPostDto
-                {
-                    Id = promotion.Id,
-                    Name = promotion.Name,
-                    Description = promotion.Description,
-                    DiscountPercent = promotion.DiscountPercent,
-                    IsCorporate = promotion.IsCorporate,
-                };
-            }
-            return null;
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                DiscountPercent = x.DiscountPercent,
+                IsCorporate = x.IsCorporate,
+                BeginDate = x.BeginDate,
+                EndDate = x.EndDate,
+                CompanyPercent = x.CompanyPercent,
+                Service = x.Service,
+            }).OrderBy(x => x.Name).ThenBy(x => x.Description).ToList();
         }
 
 

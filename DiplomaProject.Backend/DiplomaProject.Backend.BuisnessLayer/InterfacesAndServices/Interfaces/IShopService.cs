@@ -6,7 +6,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
     {
         Task CreateAsync(ShopPostDto shop);
         Task<ShopPostDto> FindByIdAsync(Guid id);
-        Task<ShopPostDto> FindByNameAsync(string name);
+        Task<List<ShopPostDto>> GetListByNameAsync(string name);
         Task RemoveAsync(Guid id);
         Task UpdateAsync(Guid id, ShopPostDto editedShop);
         Task<List<ShopPostDto>> GetAllAsync();
