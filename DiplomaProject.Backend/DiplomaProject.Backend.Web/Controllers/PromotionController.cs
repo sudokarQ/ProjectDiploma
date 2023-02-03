@@ -14,13 +14,6 @@ namespace DiplomaProject.Backend.Web.Controllers
             _promotionService = promotionService;
         }
 
-        //[HttpGet("GetPromotion")]
-        //[AllowAnonymous]
-        //public IActionResult GetAsync(Func<PromotionPostDto, bool> predicate)
-        //{
-        //    _promotionService.GetAsync(predicate);
-        //    return Ok();
-        //}
 
         [HttpGet("GetAllpromotions")]
         [AllowAnonymous]

@@ -4,7 +4,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IUserService
     {
-        Task<List<UserPostDto>> GetAsync(Func<UserPostDto, bool> predicate);
         Task CreateAsync(UserPostDto user);
         Task<UserPostDto> FindByIdAsync(Guid id);
         Task<UserPostDto> FindByLoginAsync(string login);

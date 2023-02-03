@@ -1,6 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Order;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -13,6 +12,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             _orderRepository = orderRepository;
         }
+
 
         public async Task CreateAsync(OrderPostDto order)
         {
@@ -27,31 +27,25 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
+
         public async Task<OrderPostDto> FindByIdAsync(Guid id)
         {
             var order = await _orderRepository.FindByIdAsync(id);
             return order is null ? null : new OrderPostDto
             {
+                Id = id,
                 DateTime = order.DateTime,
                 Status = order.Status,
             };
         }
 
-        public Task<List<OrderPostDto>> GetAsync(Func<OrderPostDto, bool> predicate)
-        {
-
-            return null;
-        }
-
         public async Task<List<OrderPostDto>> GetAllAsync()
-        {
-            var orders = await _orderRepository.GetAllAsync();
-            return orders.Select(x => new OrderPostDto
-            {
-                DateTime = x.DateTime,
-                Status = x.Status,
-            }).ToList();
-        }
+           => (await _orderRepository.GetAllAsync()).Select(x => new OrderPostDto
+           {
+               Id = x.Id,
+               DateTime = x.DateTime,
+               Status = x.Status,
+           }).ToList();
 
         public async Task RemoveAsync(Guid id)
         {

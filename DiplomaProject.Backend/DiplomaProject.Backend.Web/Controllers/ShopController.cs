@@ -14,13 +14,6 @@ namespace DiplomaProject.Backend.Web.Controllers
             _shopService= shopService;
         }
 
-        //[HttpGet("GetShop")]
-        //[AllowAnonymous]
-        //public IActionResult GetAsync(Func<ShopPostDto, bool> predicate)
-        //{
-        //    _shopService.GetAsync(predicate);
-        //    return Ok();
-        //}
 
         [HttpGet("GetAllShops")]
         [AllowAnonymous]

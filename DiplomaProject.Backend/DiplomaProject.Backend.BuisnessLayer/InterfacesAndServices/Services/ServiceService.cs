@@ -1,8 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore.Update.Internal;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -34,6 +32,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var service = await _serviceRepository.FindByIdAsync(id);
             return service is null ? null : new ServicePostDto
             {
+                Id = service.Id,
                 Name = service.Name,
                 TypeService = service.TypeService,
                 Price = service.Price,
@@ -45,16 +44,11 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var service = await _serviceRepository.FindByNameAsync(name);
             return service is null ? null : new ServicePostDto
             {
+                Id = service.Id,
                 Name = service.Name,
                 TypeService = service.TypeService,
                 Price = service.Price,
             }!;
-        }
-
-        public Task<List<ServicePostDto>> GetAsync(Func<ServicePostDto, bool> predicate)
-        {
-
-            return null;
         }
 
         public async Task<List<ServicePostDto>> GetAllAsync()
@@ -62,6 +56,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var services = await _serviceRepository.GetAllAsync();
             return services.Select(x => new ServicePostDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 TypeService = x.TypeService,
                 Price = x.Price,

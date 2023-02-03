@@ -1,7 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -24,7 +23,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Description = promotion.Description,
                     DiscountPercent = promotion.DiscountPercent,
                     IsCorporate = promotion.IsCorporate,
-                    BeginDate= promotion.BeginDate,
+                    BeginDate = promotion.BeginDate,
                     EndDate = promotion.EndDate,
                     CompanyPercent = promotion.CompanyPercent,
                     Service = promotion.Service,
@@ -40,6 +39,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 return new PromotionPostDto
                 {
+                    Id = id,
                     Name = promotion.Name,
                     Description = promotion.Description,
                     DiscountPercent = promotion.DiscountPercent,
@@ -56,6 +56,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 return new PromotionPostDto
                 {
+                    Id = promotion.Id,
                     Name = promotion.Name,
                     Description = promotion.Description,
                     DiscountPercent = promotion.DiscountPercent,
@@ -65,23 +66,16 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             return null;
         }
 
-        public Task<List<PromotionPostDto>> GetAsync(Func<PromotionPostDto, bool> predicate)
-        {
-
-            return null;
-        }
 
         public async Task<List<PromotionPostDto>> GetAllAsync()
-        {
-            var promotions = await _promotionRepository.GetAllAsync();
-            return promotions.Select(x => new PromotionPostDto
+            => (await _promotionRepository.GetAllAsync()).Select(x => new PromotionPostDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
                 DiscountPercent = x.DiscountPercent,
                 IsCorporate = x.IsCorporate,
             }).ToList();
-        }
 
         public async Task RemoveAsync(Guid id)
         {
@@ -109,7 +103,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (string.IsNullOrEmpty(promotion.Name))
                 return false;
 
-            if (promotion.DiscountPercent < 0 || promotion.DiscountPercent > 100) 
+            if (promotion.DiscountPercent < 0 || promotion.DiscountPercent > 100)
                 return false;
 
             return true;

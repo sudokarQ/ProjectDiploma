@@ -51,18 +51,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }!;
         }
 
-        public async Task<List<ClientPostDto>> GetAsync()
-        {
-            var clients = await _clientRepository.GetAsync(x => x.Name == "123");
-            return clients.Select(x => new ClientPostDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Surname = x.Surname,
-                PhoneNumber = x.PhoneNumber,
-            }).ToList();
-        }
-
         public async Task<List<ClientPostDto>> GetAllAsync()
         {
             var clients = await _clientRepository.GetAllAsync();
@@ -98,7 +86,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             await _clientRepository.UpdateAsync(client);
         }
 
-        public async Task<List<ClientPostDto>> GetListByName(string name)
+        public async Task<List<ClientPostDto>> GetListByNameAsync(string name)
         {
             var clients = await _clientRepository.GetAsync(x => x.Name.StartsWith(name));
 

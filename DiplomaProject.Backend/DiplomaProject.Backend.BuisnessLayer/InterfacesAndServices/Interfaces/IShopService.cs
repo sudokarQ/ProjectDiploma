@@ -4,7 +4,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IShopService
     {
-        Task<List<ShopPostDto>> GetAsync(Func<ShopPostDto, bool> predicate);
         Task CreateAsync(ShopPostDto shop);
         Task<ShopPostDto> FindByIdAsync(Guid id);
         Task<ShopPostDto> FindByNameAsync(string name);

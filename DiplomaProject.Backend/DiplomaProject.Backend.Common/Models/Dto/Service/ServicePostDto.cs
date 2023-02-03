@@ -4,6 +4,7 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Service
 {
     public class ServicePostDto
     {
+        public Guid Id { get; set; }
         [Required]
         [StringLength(100)]
         public string Name { get; set; }

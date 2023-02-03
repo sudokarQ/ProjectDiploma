@@ -16,13 +16,6 @@ namespace DiplomaProject.Backend.Web.Controllers
             _clientService = clientService;
         }
 
-        [HttpGet("GetClient")]
-        [AllowAnonymous]
-        public async Task<List<ClientPostDto>> GetAsync()
-        {
-            var clients = await _clientService.GetAsync();
-            return clients;
-        }
 
         [HttpGet("GetAllClients")]
         [AllowAnonymous]
@@ -36,7 +29,7 @@ namespace DiplomaProject.Backend.Web.Controllers
         [AllowAnonymous]
         public Task<List<ClientPostDto>> GetListByName(string name)
         {
-            var clients = _clientService.GetListByName(name);
+            var clients = _clientService.GetListByNameAsync(name);
             return clients;
         }
 

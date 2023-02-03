@@ -6,7 +6,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IOrderService
     {
-        Task<List<OrderPostDto>> GetAsync(Func<OrderPostDto, bool> predicate);
         Task CreateAsync(OrderPostDto shop);
         Task RemoveAsync(Guid id);
         Task UpdateAsync(Guid id, OrderPostDto editedOrder);

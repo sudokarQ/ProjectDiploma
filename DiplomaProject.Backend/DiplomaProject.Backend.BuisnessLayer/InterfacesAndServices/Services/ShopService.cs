@@ -37,6 +37,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 return new ShopPostDto 
                 { 
+                    Id = shop.Id,
                     Name = shop.Name, 
                     Description = shop.Description 
                 };
@@ -50,7 +51,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (shop != null)
             {
                 return new ShopPostDto
-                {
+                {   
+                    Id = shop.Id,
                     Name = shop.Name,
                     Description = shop.Description
                 };
@@ -59,21 +61,13 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             return null;
         }
 
-        public async Task<List<ShopPostDto>> GetAsync(Func<ShopPostDto, bool> predicate)
-        {
-            var shops = await _shopRepository.GetAsync(x => x.Name == "123");
-            return shops.Select(x => new ShopPostDto
+        public async Task<List<ShopPostDto>> GetAllAsync()
+            => (await _shopRepository.GetAllAsync()).Select(x => new ShopPostDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description
             }).ToList();
-        }
-
-        public async Task<List<ShopPostDto>> GetAllAsync()
-        {
-            var shops = await _shopRepository.GetAllAsync();
-            return shops.Select(x => new ShopPostDto { Name = x.Name, Description = x.Description }).ToList();
-        }
 
         public async Task RemoveAsync(Guid id)
         {

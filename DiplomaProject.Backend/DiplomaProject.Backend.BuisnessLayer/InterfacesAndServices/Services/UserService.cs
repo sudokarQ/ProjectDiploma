@@ -1,7 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto.User;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -32,6 +31,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             var user = await _userRepository.FindByIdAsync(id);
             return user is null ? null : new UserPostDto
             {
+                Id = user.Id,
                 Login = user.Login,
                 Password = user.Password,
             };
@@ -41,27 +41,19 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             var user = await _userRepository.FindByLoginAsync(login);
             return user is null ? null : new UserPostDto
-            {
+            {   Id = user.Id,
                 Login = user.Login,
                 Password = user.Password,
             }!;
         }
 
-        public Task<List<UserPostDto>> GetAsync(Func<UserPostDto, bool> predicate)
-        {
-
-            return null;
-        }
-
         public async Task<List<UserPostDto>> GetAllAsync()
-        {
-            var users = await _userRepository.GetAllAsync();
-            return users.Select(x => new UserPostDto
+            => (await _userRepository.GetAllAsync()).Select(x => new UserPostDto
             {
+                Id = x.Id,
                 Login = x.Login,
                 Password = x.Password,
             }).ToList();
-        }
 
         public async Task RemoveAsync(Guid id)
         {
