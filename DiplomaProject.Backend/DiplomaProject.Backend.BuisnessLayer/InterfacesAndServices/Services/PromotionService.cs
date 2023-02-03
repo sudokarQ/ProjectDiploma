@@ -34,7 +34,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<PromotionPostDto> FindById(Guid id)
         {
-            var promotion = await _promotionRepository.FindByIdAsync(id);
+            var promotion = await _promotionRepository.FindByIdAsync(x => x.Id == id);
             if (promotion != null)
             {
                 return new PromotionPostDto

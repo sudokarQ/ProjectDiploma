@@ -4,7 +4,6 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
-        Task<Order> FindByIdAsync(Guid id);
         Task<Order> FindByDateAndTimeAsync(DateTime date);
     }
 }

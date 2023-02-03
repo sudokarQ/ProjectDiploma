@@ -30,7 +30,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<OrderPostDto> FindByIdAsync(Guid id)
         {
-            var order = await _orderRepository.FindByIdAsync(id);
+            var order = await _orderRepository.FindByIdAsync(x => x.Id == id);
             return order is null ? null : new OrderPostDto
             {
                 Id = id,

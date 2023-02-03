@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using DiplomaProject.Backend.Common.Models.Entity;
+using System.Linq.Expressions;
 
 namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
 {
@@ -10,6 +11,7 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Interfaces
         Task RemoveAsync(TEntity item);
         Task UpdateAsync(TEntity item);
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> FindByIdAsync(Expression<Func<TEntity, bool>> predicate);
         Task<List<TEntity>> GetAllAsync();
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
     }

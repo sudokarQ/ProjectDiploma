@@ -29,7 +29,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<ClientPostDto> FindByIdAsync(Guid id)
         {
-            var client = await _clientRepository.FindByIdAsync(id);
+            var client = await _clientRepository.FindByIdAsync(x => x.Id == id);
             return client is null ? null : new ClientPostDto
             {
                 Id = client.Id,

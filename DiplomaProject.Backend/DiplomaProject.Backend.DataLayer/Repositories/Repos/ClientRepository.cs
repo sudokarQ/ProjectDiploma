@@ -15,8 +15,6 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             _dbSet = context.Set<Client>();
         }
 
-        public Task<Client> FindByIdAsync(Guid id) => _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-
         public Task<Client> FindByNameAsync(string name) => _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Name == name);
     }
 }

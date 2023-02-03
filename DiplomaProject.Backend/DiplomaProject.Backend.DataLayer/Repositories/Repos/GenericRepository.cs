@@ -1,4 +1,5 @@
-﻿using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
+﻿using DiplomaProject.Backend.Common.Models.Entity;
+using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using System.Linq.Expressions;
@@ -49,9 +50,11 @@ namespace DiplomaProject.Backend.DataLayer.Repositories.Repos
             await _context.SaveChangesAsync();
         }
 
+        public Task<TEntity> FindByIdAsync(Expression<Func<TEntity, bool>> predicate) => _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
+
         public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate); //can't convert threading cancelletion token
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)

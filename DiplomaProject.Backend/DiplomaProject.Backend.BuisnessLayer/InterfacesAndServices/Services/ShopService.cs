@@ -32,7 +32,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<ShopPostDto> FindByIdAsync(Guid id)
         {
-            var shop = await _shopRepository.FindByIdAsync(id);
+            var shop = await _shopRepository.FindByIdAsync(x => x.Id == id);
             if (shop is not null)
             {
                 return new ShopPostDto 

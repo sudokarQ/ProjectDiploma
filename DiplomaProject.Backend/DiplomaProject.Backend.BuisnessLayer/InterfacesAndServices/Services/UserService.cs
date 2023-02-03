@@ -28,7 +28,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
         public async Task<UserPostDto> FindByIdAsync(Guid id)
         {
-            var user = await _userRepository.FindByIdAsync(id);
+            var user = await _userRepository.FindByIdAsync(x => x.Id == id);
             return user is null ? null : new UserPostDto
             {
                 Id = user.Id,
