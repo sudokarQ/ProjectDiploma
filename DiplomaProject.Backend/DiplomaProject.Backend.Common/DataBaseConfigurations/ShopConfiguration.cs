@@ -13,6 +13,8 @@ namespace DiplomaProject.Backend.Common.DataBaseConfigurations
             builder.HasKey(t => t.Id);
 
             builder.HasMany(t => t.ShopUsers);
+
+            builder.HasMany(t => t.Services);
         }
     }
 }

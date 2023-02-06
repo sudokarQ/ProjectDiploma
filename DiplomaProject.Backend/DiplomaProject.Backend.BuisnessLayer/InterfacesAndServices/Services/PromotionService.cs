@@ -26,7 +26,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     BeginDate = promotion.BeginDate,
                     EndDate = promotion.EndDate,
                     CompanyPercent = promotion.CompanyPercent,
-                    Service = promotion.Service,
+                    //Service = promotion.ServiceId,
                 });
             else
                 throw new Exception("Validation declined");
@@ -64,7 +64,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 BeginDate = x.BeginDate,
                 EndDate = x.EndDate,
                 CompanyPercent = x.CompanyPercent,
-                Service = x.Service,
+                //Service = x.Service,
             }).OrderBy(x => x.Name).ThenBy(x => x.Description).ToList();
         }
 

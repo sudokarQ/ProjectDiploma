@@ -5,6 +5,7 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Order
 {
     public class OrderPostDto
     {
+        [Required]
         public Guid Id { get; set; }
 
         [Required]

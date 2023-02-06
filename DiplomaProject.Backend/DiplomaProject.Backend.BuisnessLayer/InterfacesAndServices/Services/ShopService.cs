@@ -1,4 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Shop;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
@@ -27,37 +28,33 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<ShopPostDto> FindByIdAsync(Guid id)
+        public async Task<ShopGetDto> FindByIdAsync(IdDto dto)
         {
-            var shop = await _shopRepository.FindByIdAsync(x => x.Id == id);
-            if (shop is not null)
+            var shop = await _shopRepository.FindByIdAsync(x => x.Id == dto.Id);
+
+            return shop is null ? null : new ShopGetDto
             {
-                return new ShopPostDto 
-                { 
-                    Id = shop.Id,
-                    Name = shop.Name, 
-                    Description = shop.Description, 
-                    Adress = shop.Adress
-                };
-            }
-            return null;
+                Id = shop.Id,
+                Name = shop.Name,
+                Description = shop.Description,
+                Adress = shop.Adress
+            };
+
         }
 
-        public async Task<List<ShopPostDto>> GetListByNameAsync(string name)
+        public async Task<List<ShopSearchGetDto>> GetListByNameAsync(ShopSearchGetDto dto)
         {
-            var shops = await _shopRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+            var shops = await _shopRepository.GetAsync(x => x.Name.ToLower().StartsWith(dto.Name.ToLower()));
 
-            return shops.Select(x => new ShopPostDto
+            return shops.Select(x => new ShopSearchGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                Adress = x.Adress,
-            }).OrderBy(x => x.Name).ThenBy(x => x.Description).ToList();
+            }).OrderBy(x => x.Name).ToList();
         }
 
-        public async Task<List<ShopPostDto>> GetAllAsync()
-            => (await _shopRepository.GetAllAsync()).Select(x => new ShopPostDto
+        public async Task<List<ShopGetDto>> GetAllAsync()
+            => (await _shopRepository.GetAllAsync()).Select(x => new ShopGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -65,26 +62,29 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Adress = x.Adress,
             }).ToList();
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(IdDto dto)
         {
-            var shop = await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var shop = await _shopRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
             await _shopRepository.RemoveAsync(shop);
         }
 
-        public async Task UpdateAsync(Guid id, ShopPostDto editedShop)
+        public async Task UpdateAsync(ShopPutDto dto) //ShopPutDto создать, в ней ид, имя, описание, не сильно значимые поля.
         {
-            var shop =  await _shopRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var shop = await _shopRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            if (shop is null || !Validation(editedShop))
+            if (shop is null || (shop.Name == dto.Name && shop.Description == dto.Description)) // проверка на совпадения всех полей - просто возвращать
                 return;
 
-            shop.Name = editedShop.Name;
-            shop.Description = editedShop.Description;
-            shop.Adress = editedShop.Adress;
+            shop.Name ??= dto.Name;
+            shop.Description ??= dto.Description;
+
+            //shop.Name = dto.Name is not null ? dto.Name : shop.Name;
+            //shop.Description = dto.Description is not null ? dto.Description : shop.Description;
 
             await _shopRepository.UpdateAsync(shop);
         }
 
+        // атрибуты, fluentAPI, третий способ ниже. Для более сложных моделей валидация методом - оставить минимальную на логику, то что нельзя запихнуть в первые два.
         private bool Validation(ShopPostDto shop)
         {
             if (string.IsNullOrEmpty(shop.Name))
