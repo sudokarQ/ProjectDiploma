@@ -19,9 +19,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllOrders")]
         [AllowAnonymous]
-        public Task<List<OrderGetDto>> GetAllAsync()
+        public async Task<List<OrderGetDto>> GetAllAsync()
         {
-            var orders = _orderService.GetAllAsync();
+            var orders = await _orderService.GetAllAsync();
             return orders;
         }
 

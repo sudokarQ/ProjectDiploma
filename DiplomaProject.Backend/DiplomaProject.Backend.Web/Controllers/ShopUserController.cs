@@ -18,9 +18,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllShopUsers")]
         [AllowAnonymous]
-        public Task<List<ShopUserGetDto>> GetAllAsync()
+        public async Task<List<ShopUserGetDto>> GetAllAsync()
         {
-            var shopUsers = _shopUserService.GetAllAsync();
+            var shopUsers = await _shopUserService.GetAllAsync();
             return shopUsers;
         }
 

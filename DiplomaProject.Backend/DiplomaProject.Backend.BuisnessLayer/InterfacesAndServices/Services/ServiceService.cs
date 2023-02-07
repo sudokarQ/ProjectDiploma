@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -23,6 +24,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Name = service.Name,
                     TypeService = service.TypeService,
                     Price = service.Price,
+                    Description = service.Description,
                     ShopId = service.ShopId,
                 });
             else
@@ -39,6 +41,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 TypeService = service.TypeService,
                 Price = service.Price,
                 ShopId = service.ShopId,
+                Description = service.Description,
             };
         }
 
@@ -51,6 +54,20 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Id = x.Id,
                 Name = x.Name,
                 Price = x.Price,
+                TypeService = x.TypeService,
+                Description = x.Description,
+            }).OrderBy(x => x.Name).ToList();
+        }
+
+        public async Task<List<ServiceSearchGetDto>> GetListByShopAsync(IdDto dto)
+        {
+            var services = await _serviceRepository.GetAsync(x => x.ShopId == dto.Id);
+            return services.Select(x => new ServiceSearchGetDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Price = x.Price,
+                TypeService = x.TypeService,
                 Description = x.Description,
             }).OrderBy(x => x.Name).ToList();
         }
@@ -64,6 +81,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Name = x.Name,
                 TypeService = x.TypeService,
                 Price = x.Price,
+                Description = x.Description,
                 ShopId = x.ShopId,
             }).ToList();
         }

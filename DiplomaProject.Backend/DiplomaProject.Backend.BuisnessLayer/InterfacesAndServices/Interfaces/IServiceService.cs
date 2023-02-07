@@ -11,5 +11,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
         Task UpdateAsync(ServicePutDto dto);
         Task<List<ServiceGetDto>> GetAllAsync();
         Task<List<ServiceSearchGetDto>> GetListByNameAsync(ServiceSearchGetDto dto);
+        Task<List<ServiceSearchGetDto>> GetListByShopAsync(IdDto dto);
     }
 }

@@ -18,17 +18,17 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllUsers")]
         [AllowAnonymous]
-        public Task<List<UserGetDto>> GetAllAsync()
+        public async Task<List<UserGetDto>> GetAllAsync()
         {
-            var users = _userService.GetAllAsync();
+            var users = await _userService.GetAllAsync();
             return users;
         }
 
         [HttpGet("GetUsersByLogin")]
         [AllowAnonymous]
-        public Task<List<UserSearchGetDto>> GetListByLogin(UserSearchGetDto dto)
+        public async Task<List<UserSearchGetDto>> GetListByLogin(UserSearchGetDto dto)
         {
-            var users = _userService.GetListByLoginAsync(dto);
+            var users = await _userService.GetListByLoginAsync(dto);
             return users;
         }
 

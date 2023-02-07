@@ -20,17 +20,17 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllClients")]
         [AllowAnonymous]
-        public Task<List<ClientGetDto>> GetAllAsync()
+        public async Task<List<ClientGetDto>> GetAllAsync()
         {
-            var clients = _clientService.GetAllAsync();
+            var clients = await _clientService.GetAllAsync();
             return clients;
         }
 
         [HttpGet("GetClientsByName")]
         [AllowAnonymous]
-        public Task<List<ClientSearchGetDto>> GetListByName(ClientSearchGetDto dto)
+        public async Task<List<ClientSearchGetDto>> GetListByName(ClientSearchGetDto dto)
         {
-            var clients = _clientService.GetListByNameAsync(dto);
+            var clients = await _clientService.GetListByNameAsync(dto);
             return clients;
         }
 
