@@ -1,8 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
-using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
-using DiplomaProject.Backend.DataLayer.Repositories.Repos;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 {
@@ -29,10 +28,10 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<ServicePostDto> FindByIdAsync(Guid id)
+        public async Task<ServiceGetDto> FindByIdAsync(IdDto dto)
         {
-            var service = await _serviceRepository.FindByIdAsync(x => x.Id == id);
-            return service is null ? null : new ServicePostDto
+            var service = await _serviceRepository.FindByIdAsync(x => x.Id == dto.Id);
+            return service is null ? null : new ServiceGetDto
             {
                 Id = service.Id,
                 Name = service.Name,
@@ -41,23 +40,21 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             };
         }
 
-        public async Task<List<ServicePostDto>> GetListByNameAsync(string name)
+        public async Task<List<ServiceSearchGetDto>> GetListByNameAsync(ServiceSearchGetDto dto)
         {
-            var services = await _serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+            var services = await _serviceRepository.GetAsync(x => x.Name.ToLower().StartsWith(dto.Name.ToLower()));
 
-            return services.Select(x => new ServicePostDto
+            return services.Select(x => new ServiceSearchGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
-                TypeService = x.TypeService,
-                Price = x.Price,
-            }).OrderBy(x => x.Name).ThenBy(x => x.TypeService).ToList();
+            }).OrderBy(x => x.Name).ToList();
         }
 
-        public async Task<List<ServicePostDto>> GetAllAsync()
+        public async Task<List<ServiceGetDto>> GetAllAsync()
         {
             var services = await _serviceRepository.GetAllAsync();
-            return services.Select(x => new ServicePostDto
+            return services.Select(x => new ServiceGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -66,22 +63,22 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             }).ToList();
         }
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(IdDto dto)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
             await _serviceRepository.RemoveAsync(service);
         }
 
-        public async Task UpdateAsync(Guid id, ServicePostDto editedService)
+        public async Task UpdateAsync(ServicePutDto dto)
         {
-            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var service = await _serviceRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            if (service is null || !Validation(editedService))
+            if (service is null || (service.Name == dto.Name && service.Price == dto.Price))
                 return;
+            // Валидация?
 
-            service.Name = editedService.Name;
-            service.TypeService = editedService.TypeService;
-            service.Price = editedService.Price;
+            service.Name = dto.Name ?? service.Name;
+            service.Price = dto.Price ?? service.Price;
 
             await _serviceRepository.UpdateAsync(service);
         }

@@ -1,6 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -24,71 +24,76 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Surname = client.Surname,
                     PhoneNumber = client.PhoneNumber,
                     Email = client.Email,
+                    CompanyName = client.CompanyName,
+                    BirthdayDate = client.BirthdayDate,
+                    Adress = client.Adress,
                 });
             else
                 throw new Exception("Validation declined");
         }
 
-        public async Task<ClientPostDto> FindByIdAsync(Guid id)
+        public async Task<ClientGetDto> FindByIdAsync(IdDto dto)
         {
-            var client = await _clientRepository.FindByIdAsync(x => x.Id == id);
-            return client is null ? null : new ClientPostDto
+            var client = await _clientRepository.FindByIdAsync(x => x.Id == dto.Id);
+            return client is null ? null : new ClientGetDto
             {
                 Id = client.Id,
                 Name = client.Name,
                 Surname = client.Surname,
                 PhoneNumber = client.PhoneNumber,
+                Email = client.Email,
+                BirthdayDate = client.BirthdayDate,
+                Adress = client.Adress,
             };
         }
 
-        public async Task<List<ClientPostDto>> GetAllAsync()
+        public async Task<List<ClientGetDto>> GetAllAsync()
         {
             var clients = await _clientRepository.GetAllAsync();
-            return clients.Select(x => new ClientPostDto
+            return clients.Select(x => new ClientGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname,
                 PhoneNumber = x.PhoneNumber,
                 Email = x.Email,
+                BirthdayDate = x.BirthdayDate,
+                Adress = x.Adress,
             }).ToList();
         }
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(IdDto dto)
         {
-            var client = await _clientRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var client = await _clientRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
             await _clientRepository.RemoveAsync(client);
         }
 
-        public async Task UpdateAsync(Guid id, ClientPostDto editedClient)
+        public async Task UpdateAsync(ClientPutDto dto)
         {
-            var client = await _clientRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var client = await _clientRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            if (client is null)
+            if (client is null || (client.Name == dto.Name && client.Surname == dto.Surname && client.CompanyName == dto.CompanyName))
                 return;
 
-            if (!await Validation(editedClient))
-                throw new Exception("Validation declined"); ;
+            //if (!await Validation(dto))
+            //    throw new Exception("Validation declined");
 
-            client.Name = editedClient.Name;
-            client.Surname = editedClient.Surname;
-            client.PhoneNumber = editedClient.PhoneNumber;
-            client.Email = editedClient.Email;
+            client.Name = dto.Name ?? client.Name;
+            client.Surname = dto.Surname ?? client.Surname;
+            client.CompanyName = dto.CompanyName ?? client.CompanyName;
 
             await _clientRepository.UpdateAsync(client);
         }
 
-        public async Task<List<ClientPostDto>> GetListByNameAsync(string name)
+        public async Task<List<ClientSearchGetDto>> GetListByNameAsync(ClientSearchGetDto dto)
         {
-            var clients = await _clientRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+            var clients = await _clientRepository.GetAsync(x => x.Name.ToLower().StartsWith(dto.Name.ToLower()));
 
-            return clients.Select(x => new ClientPostDto
+            return clients.Select(x => new ClientSearchGetDto
             {   
                 Id = x.Id,
                 Name = x.Name,
                 Surname = x.Surname,
-                PhoneNumber = x.PhoneNumber,
-                Email = x.Email,
             }).OrderBy(x => x.Name).ThenBy(x => x.Surname).ToList();
         }
 

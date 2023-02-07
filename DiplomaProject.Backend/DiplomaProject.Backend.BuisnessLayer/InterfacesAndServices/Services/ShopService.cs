@@ -75,8 +75,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             if (shop is null || (shop.Name == dto.Name && shop.Description == dto.Description)) // проверка на совпадения всех полей - просто возвращать
                 return;
 
-            shop.Name ??= dto.Name;
-            shop.Description ??= dto.Description;
+            shop.Name = dto.Name ?? shop.Name;
+            shop.Description = dto.Description ?? shop.Description;
 
             //shop.Name = dto.Name is not null ? dto.Name : shop.Name;
             //shop.Description = dto.Description is not null ? dto.Description : shop.Description;

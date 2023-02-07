@@ -1,4 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllServices")]
         [AllowAnonymous]
-        public Task<List<ServicePostDto>> GetAllAsync()
+        public Task<List<ServiceGetDto>> GetAllAsync()
         {
             var services = _serviceService.GetAllAsync();
             return services;
@@ -25,9 +26,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetServicesByName")]
         [AllowAnonymous]
-        public Task<List<ServicePostDto>> GetListByName(string name)
+        public Task<List<ServiceSearchGetDto>> GetListByName(ServiceSearchGetDto dto)
         {
-            var services = _serviceService.GetListByNameAsync(name);
+            var services = _serviceService.GetListByNameAsync(dto);
             return services;
         }
 
@@ -41,25 +42,25 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteService")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(Guid id)
+        public async Task<IActionResult> Remove(IdDto dto)
         {
-            await _serviceService.RemoveAsync(id);
+            await _serviceService.RemoveAsync(dto);
             return Ok();
         }
 
         [HttpPut("UpdateService")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(Guid id, ServicePostDto editedService)
+        public async Task<IActionResult> Update(ServicePutDto dto)
         {
-            await _serviceService.UpdateAsync(id, editedService);
+            await _serviceService.UpdateAsync(dto);
             return Ok();
         }
 
         [HttpGet("FindService")]
         [AllowAnonymous]
-        public async Task<ServicePostDto> FindByIdAsync(Guid id)
+        public async Task<ServiceGetDto> FindByIdAsync(IdDto dto)
         {
-            var serviceDto = await _serviceService.FindByIdAsync(id);
+            var serviceDto = await _serviceService.FindByIdAsync(dto);
             return serviceDto;
         }
     }

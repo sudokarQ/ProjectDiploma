@@ -1,5 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -32,70 +34,72 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 throw new Exception("Validation declined");
         }
 
-        public async Task<PromotionPostDto> FindById(Guid id)
+        public async Task<PromotionGetDto> FindByIdAsync(IdDto dto)
         {
-            var promotion = await _promotionRepository.FindByIdAsync(x => x.Id == id);
-            if (promotion != null)
+            var promotion = await _promotionRepository.FindByIdAsync(x => x.Id == dto.Id);
+
+            return promotion is null ? null : new PromotionGetDto
             {
-                return new PromotionPostDto
-                {
-                    Id = id,
-                    Name = promotion.Name,
-                    Description = promotion.Description,
-                    DiscountPercent = promotion.DiscountPercent,
-                    IsCorporate = promotion.IsCorporate,
-                };
-            }
-            return null;
+                Id = promotion.Id,
+                Name = promotion.Name,
+                Description = promotion.Description,
+                BeginDate = promotion.BeginDate,
+                EndDate = promotion.EndDate,
+                DiscountPercent = promotion.DiscountPercent,
+                IsCorporate = promotion.IsCorporate,
+                CompanyPercent = promotion.CompanyPercent,
+            };
         }
 
 
-        public async Task<List<PromotionPostDto>> GetListByNameAsync(string name)
+        public async Task<List<PromotionSearchGetDto>> GetListByNameAsync(PromotionSearchGetDto dto)
         {
-            var clients = await _promotionRepository.GetAsync(x => x.Name.ToLower().StartsWith(name.ToLower()));
+            var clients = await _promotionRepository.GetAsync(x => x.Name.ToLower().StartsWith(dto.Name.ToLower()));
 
-            return clients.Select(x => new PromotionPostDto
+            return clients.Select(x => new PromotionSearchGetDto
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                DiscountPercent = x.DiscountPercent,
-                IsCorporate = x.IsCorporate,
-                BeginDate = x.BeginDate,
-                EndDate = x.EndDate,
-                CompanyPercent = x.CompanyPercent,
                 //Service = x.Service,
-            }).OrderBy(x => x.Name).ThenBy(x => x.Description).ToList();
+            }).OrderBy(x => x.Name).ToList();
         }
 
 
-        public async Task<List<PromotionPostDto>> GetAllAsync()
-            => (await _promotionRepository.GetAllAsync()).Select(x => new PromotionPostDto
+        public async Task<List<PromotionGetDto>> GetAllAsync()
+            => (await _promotionRepository.GetAllAsync()).Select(promotion => new PromotionGetDto
             {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                DiscountPercent = x.DiscountPercent,
-                IsCorporate = x.IsCorporate,
+                Id = promotion.Id,
+                Name = promotion.Name,
+                Description = promotion.Description,
+                BeginDate = promotion.BeginDate,
+                EndDate = promotion.EndDate,
+                DiscountPercent = promotion.DiscountPercent,
+                IsCorporate = promotion.IsCorporate,
+                CompanyPercent = promotion.CompanyPercent,
             }).ToList();
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(IdDto dto)
         {
-            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
             await _promotionRepository.RemoveAsync(promotion);
         }
 
-        public async Task UpdateAsync(Guid id, PromotionPostDto editedPromotion)
+        public async Task UpdateAsync(PromotionPutDto dto)
         {
-            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var promotion = await _promotionRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            if (promotion is null || !Validation(editedPromotion))
+            if (promotion is null)
                 return;
 
-            promotion.Name = editedPromotion.Name;
-            promotion.Description = editedPromotion.Description;
-            promotion.DiscountPercent = editedPromotion.DiscountPercent;
-            promotion.IsCorporate = editedPromotion.IsCorporate;
+            //Валидация?
+
+            promotion.Name = dto.Name ?? promotion.Name;
+            promotion.Description = dto.Description ?? promotion.Description;
+            promotion.DiscountPercent = dto.DiscountPercent ?? promotion.DiscountPercent;
+            promotion.IsCorporate = dto.IsCorporate ?? promotion.IsCorporate;
+            promotion.CompanyPercent = dto.CompanyPercent ?? promotion.CompanyPercent;
+            promotion.BeginDate = dto.BeginDate ?? promotion.BeginDate;
+            promotion.EndDate = dto.EndDate ?? promotion.EndDate;
 
             await _promotionRepository.UpdateAsync(promotion);
         }

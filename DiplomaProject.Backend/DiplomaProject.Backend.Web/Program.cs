@@ -1,6 +1,3 @@
-using DiplomaProject.Backend.BuisnessLayer.Helpers;
-using DiplomaProject.Backend.DataLayer.Helpers;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

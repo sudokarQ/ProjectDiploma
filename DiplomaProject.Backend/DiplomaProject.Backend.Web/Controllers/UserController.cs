@@ -1,6 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
-using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services;
-using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllUsers")]
         [AllowAnonymous]
-        public Task<List<UserPostDto>> GetAllAsync()
+        public Task<List<UserGetDto>> GetAllAsync()
         {
             var users = _userService.GetAllAsync();
             return users;
@@ -27,9 +26,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetUsersByLogin")]
         [AllowAnonymous]
-        public Task<List<UserPostDto>> GetListByLogin(string name)
+        public Task<List<UserSearchGetDto>> GetListByLogin(UserSearchGetDto dto)
         {
-            var users = _userService.GetListByLoginAsync(name);
+            var users = _userService.GetListByLoginAsync(dto);
             return users;
         }
 
@@ -43,25 +42,25 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteUser")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(Guid id)
+        public async Task<IActionResult> Remove(IdDto dto)
         {
-            await _userService.RemoveAsync(id);
+            await _userService.RemoveAsync(dto);
             return Ok();
         }
 
         [HttpPut("UpdateUser")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(Guid id, UserPostDto editedUser)
+        public async Task<IActionResult> Update(UserPutDto dto)
         {
-            await _userService.UpdateAsync(id, editedUser);
+            await _userService.UpdateAsync(dto);
             return Ok();
         }
 
         [HttpGet("FindUser")]
         [AllowAnonymous]
-        public async Task<UserPostDto> FindByIdAsync(Guid id)
+        public async Task<UserGetDto> FindByIdAsync(IdDto dto)
         {
-            var clientDto = await _userService.FindByIdAsync(id);
+            var clientDto = await _userService.FindByIdAsync(dto);
             return clientDto;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +20,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllClients")]
         [AllowAnonymous]
-        public Task<List<ClientPostDto>> GetAllAsync()
+        public Task<List<ClientGetDto>> GetAllAsync()
         {
             var clients = _clientService.GetAllAsync();
             return clients;
@@ -27,9 +28,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetClientsByName")]
         [AllowAnonymous]
-        public Task<List<ClientPostDto>> GetListByName(string name)
+        public Task<List<ClientSearchGetDto>> GetListByName(ClientSearchGetDto dto)
         {
-            var clients = _clientService.GetListByNameAsync(name);
+            var clients = _clientService.GetListByNameAsync(dto);
             return clients;
         }
 
@@ -43,25 +44,25 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteClient")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(Guid id)
+        public async Task<IActionResult> Remove(IdDto dto)
         {
-            await _clientService.RemoveAsync(id);
+            await _clientService.RemoveAsync(dto);
             return Ok();
         }
 
         [HttpPut("UpdateClient")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(Guid id, ClientPostDto editedClient)
+        public async Task<IActionResult> Update(ClientPutDto dto)
         {
-            await _clientService.UpdateAsync(id, editedClient);
+            await _clientService.UpdateAsync(dto);
             return Ok();
         }
 
         [HttpGet("FindClient")]
         [AllowAnonymous]
-        public async Task<ClientPostDto> FindByIdAsync(Guid id)
+        public async Task<ClientGetDto> FindByIdAsync(IdDto dto)
         {
-            var clientDto = await _clientService.FindByIdAsync(id);
+            var clientDto = await _clientService.FindByIdAsync(dto);
             return clientDto;
         }
     }

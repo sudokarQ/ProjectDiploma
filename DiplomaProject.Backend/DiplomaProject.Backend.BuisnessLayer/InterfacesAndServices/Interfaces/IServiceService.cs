@@ -1,14 +1,15 @@
-﻿using DiplomaProject.Backend.Common.Models.Dto.Service;
+﻿using DiplomaProject.Backend.Common.Models.Dto;
+using DiplomaProject.Backend.Common.Models.Dto.Service;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces
 {
     public interface IServiceService
     {
         Task CreateAsync(ServicePostDto service);
-        Task<ServicePostDto> FindByIdAsync(Guid id);
-        Task RemoveAsync(Guid id);
-        Task UpdateAsync(Guid id, ServicePostDto editedService);
-        Task<List<ServicePostDto>> GetAllAsync();
-        Task<List<ServicePostDto>> GetListByNameAsync(string name);
+        Task<ServiceGetDto> FindByIdAsync(IdDto dto);
+        Task RemoveAsync(IdDto dto);
+        Task UpdateAsync(ServicePutDto dto);
+        Task<List<ServiceGetDto>> GetAllAsync();
+        Task<List<ServiceSearchGetDto>> GetListByNameAsync(ServiceSearchGetDto dto);
     }
 }

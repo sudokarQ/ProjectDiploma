@@ -1,6 +1,5 @@
 ﻿using DiplomaProject.Backend.Common.DataBaseConfigurations;
 using DiplomaProject.Backend.Common.Models.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace DiplomaProject.Backend.Common.Models.Entity
 {

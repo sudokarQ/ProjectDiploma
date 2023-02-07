@@ -1,6 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
-using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services;
-using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllpromotions")]
         [AllowAnonymous]
-        public Task<List<PromotionPostDto>> GetAllAsync()
+        public Task<List<PromotionGetDto>> GetAllAsync()
         {
             var promotions = _promotionService.GetAllAsync();
             return promotions;
@@ -27,9 +26,9 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetPromotionsByName")]
         [AllowAnonymous]
-        public Task<List<PromotionPostDto>> GetListByName(string name)
+        public Task<List<PromotionSearchGetDto>> GetListByName(PromotionSearchGetDto dto)
         {
-            var promotions = _promotionService.GetListByNameAsync(name);
+            var promotions = _promotionService.GetListByNameAsync(dto);
             return promotions;
         }
 
@@ -43,25 +42,25 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeletePromotion")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(Guid id)
+        public async Task<IActionResult> Remove(IdDto dto)
         {
-            await _promotionService.RemoveAsync(id);
+            await _promotionService.RemoveAsync(dto);
             return Ok();
         }
 
         [HttpPut("UpdatePromotion")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(Guid id, PromotionPostDto editedPromotion)
+        public async Task<IActionResult> Update(PromotionPutDto dto)
         {
-            await _promotionService.UpdateAsync(id, editedPromotion);
+            await _promotionService.UpdateAsync(dto);
             return Ok();
         }
 
         [HttpGet("FindPromotion")]
         [AllowAnonymous]
-        public async Task<PromotionPostDto> FindByIdAsync(Guid id)
+        public async Task<PromotionGetDto> FindByIdAsync(IdDto dto)
         {
-            var PromotionDto = await _promotionService.FindById(id);
+            var PromotionDto = await _promotionService.FindByIdAsync(dto);
             if (PromotionDto == null)
                 return null;
 
