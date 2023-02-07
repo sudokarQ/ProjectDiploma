@@ -7,7 +7,6 @@
         public string Description { get; set; }
         public string Adress { get; set; }
         public int DiscountPercent { get; set; }
-
         public List<Service> Services { get; set; }
         public List<ShopUser> ShopUsers { get; set; }
     }

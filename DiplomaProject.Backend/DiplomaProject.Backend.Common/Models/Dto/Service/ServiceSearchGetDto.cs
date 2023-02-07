@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DiplomaProject.Backend.Common.Models.Dto.Service
+﻿namespace DiplomaProject.Backend.Common.Models.Dto.Service
 {
     public class ServiceSearchGetDto
     {

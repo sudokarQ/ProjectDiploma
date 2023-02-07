@@ -1,6 +1,7 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
+using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -27,6 +28,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     CompanyName = client.CompanyName,
                     BirthdayDate = client.BirthdayDate,
                     Adress = client.Adress,
+                    UserId = client.UserId,
                 });
             else
                 throw new Exception("Validation declined");
@@ -44,6 +46,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Email = client.Email,
                 BirthdayDate = client.BirthdayDate,
                 Adress = client.Adress,
+                UserId = client.UserId,
             };
         }
 
@@ -59,6 +62,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Email = x.Email,
                 BirthdayDate = x.BirthdayDate,
                 Adress = x.Adress,
+                UserId = x.UserId,
             }).ToList();
         }
 

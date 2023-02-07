@@ -1,7 +1,6 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
 using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Promotion;
-using DiplomaProject.Backend.Common.Models.Entity;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
 namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
@@ -28,7 +27,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     BeginDate = promotion.BeginDate,
                     EndDate = promotion.EndDate,
                     CompanyPercent = promotion.CompanyPercent,
-                    //Service = promotion.ServiceId,
+                    ServiceId = promotion.ServiceId,
                 });
             else
                 throw new Exception("Validation declined");
@@ -48,6 +47,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 DiscountPercent = promotion.DiscountPercent,
                 IsCorporate = promotion.IsCorporate,
                 CompanyPercent = promotion.CompanyPercent,
+                ServiceId = promotion.ServiceId,
             };
         }
 
@@ -60,7 +60,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 Id = x.Id,
                 Name = x.Name,
-                //Service = x.Service,
+                ServiceId = x.ServiceId,
             }).OrderBy(x => x.Name).ToList();
         }
 
@@ -76,6 +76,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 DiscountPercent = promotion.DiscountPercent,
                 IsCorporate = promotion.IsCorporate,
                 CompanyPercent = promotion.CompanyPercent,
+                ServiceId = promotion.ServiceId,
             }).ToList();
 
         public async Task RemoveAsync(IdDto dto)
@@ -100,6 +101,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             promotion.CompanyPercent = dto.CompanyPercent ?? promotion.CompanyPercent;
             promotion.BeginDate = dto.BeginDate ?? promotion.BeginDate;
             promotion.EndDate = dto.EndDate ?? promotion.EndDate;
+            promotion.ServiceId = dto.ServiceId ?? promotion.ServiceId;
 
             await _promotionRepository.UpdateAsync(promotion);
         }

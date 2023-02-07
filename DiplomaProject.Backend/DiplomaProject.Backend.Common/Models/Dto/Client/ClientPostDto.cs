@@ -19,6 +19,6 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Client
         public DateTime? BirthdayDate { get; set; }
         public string Adress { get; set; }
         public string? CompanyName { get; set; }
-        //public Guid UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

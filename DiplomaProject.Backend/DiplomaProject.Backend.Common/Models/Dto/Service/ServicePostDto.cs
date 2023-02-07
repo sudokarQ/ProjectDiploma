@@ -11,5 +11,6 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Service
         public string TypeService { get; set; }
         [Required]
         public decimal? Price { get; set; }
+        public Guid? ShopId { get; set; }
     }
 }

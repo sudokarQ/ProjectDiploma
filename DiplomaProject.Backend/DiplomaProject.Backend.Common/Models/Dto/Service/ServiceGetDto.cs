@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string TypeService { get; set; }
         public decimal? Price { get; set; }
+        public Guid? ShopId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Client;
 using DiplomaProject.Backend.Common.Models.Dto.Order;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +19,7 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpGet("GetAllOrders")]
         [AllowAnonymous]
-        public Task<List<OrderPostDto>> GetAllAsync()
+        public Task<List<OrderGetDto>> GetAllAsync()
         {
             var orders = _orderService.GetAllAsync();
             return orders;
@@ -34,25 +35,25 @@ namespace DiplomaProject.Backend.Web.Controllers
 
         [HttpDelete("DeleteOrder")]
         [AllowAnonymous]
-        public async Task<IActionResult> Remove(Guid id)
+        public async Task<IActionResult> Remove(IdDto dto)
         {
-            await _orderService.RemoveAsync(id);
+            await _orderService.RemoveAsync(dto);
             return Ok();
         }
 
         [HttpPut("UpdateOrder")]
         [AllowAnonymous]
-        public async Task<IActionResult> Update(Guid id, OrderPostDto editedOrder)
+        public async Task<IActionResult> Update(OrderPutDto dto)
         {
-            await _orderService.UpdateAsync(id, editedOrder);
+            await _orderService.UpdateAsync(dto);
             return Ok();
         }
 
         [HttpGet("FindOrder")]
         [AllowAnonymous]
-        public async Task<OrderPostDto> FindByIdAsync(Guid id)
+        public async Task<OrderGetDto> FindByIdAsync(IdDto dto)
         {
-            var orderDto = await _orderService.FindByIdAsync(id);
+            var orderDto = await _orderService.FindByIdAsync(dto);
             return orderDto;
         }
     }

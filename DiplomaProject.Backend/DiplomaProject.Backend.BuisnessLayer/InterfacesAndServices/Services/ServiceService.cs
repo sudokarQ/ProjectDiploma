@@ -23,6 +23,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Name = service.Name,
                     TypeService = service.TypeService,
                     Price = service.Price,
+                    ShopId = service.ShopId,
                 });
             else
                 throw new Exception("Validation declined");
@@ -37,6 +38,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Name = service.Name,
                 TypeService = service.TypeService,
                 Price = service.Price,
+                ShopId = service.ShopId,
             };
         }
 
@@ -60,6 +62,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                 Name = x.Name,
                 TypeService = x.TypeService,
                 Price = x.Price,
+                ShopId = x.ShopId,
             }).ToList();
         }
 

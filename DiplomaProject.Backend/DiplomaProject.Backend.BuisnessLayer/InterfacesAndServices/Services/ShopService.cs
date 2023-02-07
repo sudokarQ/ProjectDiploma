@@ -78,9 +78,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             shop.Name = dto.Name ?? shop.Name;
             shop.Description = dto.Description ?? shop.Description;
 
-            //shop.Name = dto.Name is not null ? dto.Name : shop.Name;
-            //shop.Description = dto.Description is not null ? dto.Description : shop.Description;
-
             await _shopRepository.UpdateAsync(shop);
         }
 

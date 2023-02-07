@@ -10,5 +10,6 @@
         public decimal? DiscountPercent { get; set; }
         public bool? IsCorporate { get; set; }
         public decimal? CompanyPercent { get; set; }
+        public Guid? ServiceId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Interfaces;
+using DiplomaProject.Backend.Common.Models.Dto;
 using DiplomaProject.Backend.Common.Models.Dto.Order;
 using DiplomaProject.Backend.DataLayer.Repositories.Interfaces;
 
@@ -22,46 +23,58 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
                     Id = new Guid(),
                     DateTime = order.DateTime,
                     Status = order.Status,
+                    Type = order.Type,
+                    ClientId = order.ClientId,
+                    ServiceId = order.ServiceId,
                 });
             else
                 throw new Exception("Validation declined");
         }
 
 
-        public async Task<OrderPostDto> FindByIdAsync(Guid id)
+        public async Task<OrderGetDto> FindByIdAsync(IdDto dto)
         {
-            var order = await _orderRepository.FindByIdAsync(x => x.Id == id);
-            return order is null ? null : new OrderPostDto
+            var order = await _orderRepository.FindByIdAsync(x => x.Id == dto.Id);
+            return order is null ? null : new OrderGetDto
             {
-                Id = id,
+                Id = dto.Id,
                 DateTime = order.DateTime,
                 Status = order.Status,
+                Type = order.Type,
+                ClientId = order.ClientId,
+                ServiceId = order.ServiceId,
+                TotaPrice = order.TotaPrice,
             };
         }
 
-        public async Task<List<OrderPostDto>> GetAllAsync()
-           => (await _orderRepository.GetAllAsync()).Select(x => new OrderPostDto
+        public async Task<List<OrderGetDto>> GetAllAsync()
+           => (await _orderRepository.GetAllAsync()).Select(x => new OrderGetDto
            {
                Id = x.Id,
                DateTime = x.DateTime,
                Status = x.Status,
+               Type = x.Type,
+               ClientId = x.ClientId,
+               ServiceId = x.ServiceId,
+               TotaPrice = x.TotaPrice,
            }).ToList();
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(IdDto dto)
         {
-            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
             await _orderRepository.RemoveAsync(order);
         }
 
-        public async Task UpdateAsync(Guid id, OrderPostDto editedOrder)
+        public async Task UpdateAsync(OrderPutDto dto)
         {
-            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == id);
+            var order = await _orderRepository.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
             if (order is null)
                 return;
 
-            order.DateTime = editedOrder.DateTime;
-            order.Status = editedOrder.Status;
+            order.Type = dto.Type ?? order.Type;
+            order.Status = dto.Status ?? order.Status;
+            order.TotaPrice= dto.TotaPrice ?? order.TotaPrice;
 
             await _orderRepository.UpdateAsync(order);
         }
