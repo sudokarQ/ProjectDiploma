@@ -50,6 +50,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
             {
                 Id = x.Id,
                 Name = x.Name,
+                Price = x.Price,
+                Description = x.Description,
             }).OrderBy(x => x.Name).ToList();
         }
 
@@ -90,9 +92,6 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
         {
             if (string.IsNullOrEmpty(service.Name) || string.IsNullOrEmpty(service.TypeService) || service.Price < 0)
                 return false;
-
-            //if (_serviceRepository.FirstOrDefaultAsync(x => x.Name == service.Name) is not null)
-            //    return false;
 
             return true;
         }

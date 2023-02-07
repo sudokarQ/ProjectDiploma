@@ -23,6 +23,8 @@ namespace DiplomaProject.Backend.BuisnessLayer.Helpers
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IServiceService, ServiceService>();
             service.AddScoped<IPromotionService, PromotionService>();
+            service.AddScoped<IShopUserService, ShopUserService>();
+            
             
             // для каждой модели
         }

@@ -78,9 +78,7 @@ namespace DiplomaProject.Backend.BuisnessLayer.InterfacesAndServices.Services
 
             if (client is null || (client.Name == dto.Name && client.Surname == dto.Surname && client.CompanyName == dto.CompanyName))
                 return;
-
-            //if (!await Validation(dto))
-            //    throw new Exception("Validation declined");
+            //Сделать в модели валидацию на пробелы
 
             client.Name = dto.Name ?? client.Name;
             client.Surname = dto.Surname ?? client.Surname;

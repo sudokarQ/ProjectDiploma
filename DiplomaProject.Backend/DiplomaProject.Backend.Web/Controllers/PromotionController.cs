@@ -61,9 +61,6 @@ namespace DiplomaProject.Backend.Web.Controllers
         public async Task<PromotionGetDto> FindByIdAsync(IdDto dto)
         {
             var PromotionDto = await _promotionService.FindByIdAsync(dto);
-            if (PromotionDto == null)
-                return null;
-
             return PromotionDto;
         }
     }

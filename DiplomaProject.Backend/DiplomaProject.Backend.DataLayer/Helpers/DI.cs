@@ -32,6 +32,7 @@ namespace DiplomaProject.Backend.DataLayer.Helpers
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<IServiceRepository, ServiceRepository>();
             service.AddScoped<IPromotionRepository, PromotionRepository>();
+            service.AddScoped<IShopUserRepository, ShopUserRepository>();
             
             // для каждой модели
         }

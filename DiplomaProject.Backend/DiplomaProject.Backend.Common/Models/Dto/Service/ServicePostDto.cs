@@ -8,9 +8,11 @@ namespace DiplomaProject.Backend.Common.Models.Dto.Service
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+        public string Description { get; set; }
         public string TypeService { get; set; }
         [Required]
-        public decimal? Price { get; set; }
-        public Guid? ShopId { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Некорректная стоимость")]
+        public decimal Price { get; set; }
+        public Guid ShopId { get; set; }
     }
 }
